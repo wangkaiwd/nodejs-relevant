@@ -1,9 +1,20 @@
 // schema://host:port/path?query#hash
+// port: 22 ssh, 80:http, 443:https, 27017:mongodb
 const http = require('http')
 const server = http.createServer()
 server.listen(8808)
 
 server.on('request', (req, res) => {
+  // console.log(req.url)
   res.statusCode = 200
-  res.end('welcome to my first http server')
+  const {url} = req
+  let resStr
+  if (url === '/hello') {
+    resStr = 'hi there'
+  } else if (url === '/bye') {
+    resStr = 'see ya next time'
+  } else {
+    resStr = 'I cant understand what are you saying'
+  }
+  res.end(resStr)
 })

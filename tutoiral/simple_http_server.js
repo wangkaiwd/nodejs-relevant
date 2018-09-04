@@ -31,7 +31,7 @@ server.on('request', (req, res) => {
           break
         case 'POST':
           const contentType = req.headers['content-type']
-          // console.log('type', req.getHeader('Content-Type'))
+          console.log('type', req.getHeader('Content-Type'))
           // contentType不存在或者Content-Type不等于application/json的时候，会返回400
           if (contentType !== 'application/json' || !contentType) {
             res.statusCode = 400
@@ -39,22 +39,15 @@ server.on('request', (req, res) => {
           } else {
             let requestBodyStr = ''
             req.on('data', (data) => {
-              console.log('data')
-              // console.log('data', data.toString())
               requestBodyStr += data.toString()
             })
             req.on('end', () => {
-              console.log('end')
               const user = JSON.parse(requestBodyStr)
               users.push(user)
               res.statusCode = 200
               res.end(JSON.stringify(user))
             })
           }
-          // const user = {age: parseInt(Math.random() * 1000)}
-          // users.push(user)
-          // res.statusCode = 200
-          // res.end(JSON.stringify(user))
           break
       }
       break

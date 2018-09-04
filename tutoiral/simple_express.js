@@ -11,3 +11,12 @@ app.get('/', (req, res) => {
   console.log(req.url)
   res.send('Hello World')
 })
+
+// 使用Node http模块实现
+
+// const http = require('http')
+// const server = http.createServer()
+// server.listen(8880)
+// server.on('request', (req, res) => {
+//   console.log('监听请求')
+// })

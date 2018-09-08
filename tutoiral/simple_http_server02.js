@@ -10,10 +10,10 @@ const auth = (req, res, next) => {
   }
 }
 
-app.use(auth)
+app.use(require('../middlewares/auth'))
 
 app.use((req, res) => {
-  res.end('Hello world')
+  res.end('Hello my express demo!')
 })
 app.listen(3000, () => {
   console.log('listen 3000 port')

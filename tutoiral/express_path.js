@@ -11,8 +11,10 @@ const mdw2 = (req, res, next) => {
 }
 const mdw3 = (req, res, next) => {
   console.log('mdw3')
-  next()
+  res.end('done')
 }
+
+// 流程控制
 app.use('/', mdw1)
 app.use('/user', mdw2)
 app.use(mdw3)

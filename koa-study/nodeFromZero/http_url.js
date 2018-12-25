@@ -10,7 +10,8 @@ const server = http.createServer((req, res) => {
   // parseQuery默认为false,设置为true之后会将url.parse中的query属性会是一个使用querystring
   // 模块的parse生成的对象
   // 设置为false:query是一个未解析未解码的字符串
-  console.log(url.parse(req.url, true))
+  const result = url.parse(req.url, true)
+  console.log('result', result)
   // 要指定请求头，否则不会解析为html
   res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
@@ -22,3 +23,9 @@ const server = http.createServer((req, res) => {
 server.listen(8000, (err) => {
   if (!err) { console.log('服务器启动，连接8000端口') }
 })
+
+// URL: 给定的独特资源在web上的地址
+
+// url示例：
+// http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+// 协议(protocol)：http://, 它表明了浏览器必须使用何种协议。可能是：https,http,mialto,ftp

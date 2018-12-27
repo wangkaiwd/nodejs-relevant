@@ -1,3 +1,9 @@
+const tools = require('./_tool_add')
+const wkTools = require('./wk-modules')
+console.log('wkTools', wkTools)
+console.log('tools', tools.add())
+
+
 const url = require('url')
 console.log('parse', url.parse('http://www.baidu.com'))
 // parse Url {

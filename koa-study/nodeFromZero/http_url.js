@@ -1,18 +1,22 @@
 // url: 处理与解析url
-const url    = require('url')
-const http   = require('http')
+const url = require('url')
+const http = require('http')
 const server = http.createServer((req, res) => {
   // 这里用浏览器请求的话会执行俩次
-  // 因为还请求了'/favicon.ico'
-  console.log(req.url)
+  // 因为还请求了'/favicon.ico'(浏览器会默认请求favicon.ico图标)
+  // console.log(req.url)
   // url.parse: 解析url字符串并返回RUL对象
   // url.parse(urlString[,parseQuery[,slashesDenoteHost]])
   // parseQuery默认为false,设置为true之后会将url.parse中的query属性会是一个使用querystring
   // 模块的parse生成的对象
   // 设置为false:query是一个未解析未解码的字符串
-  const result = url.parse(req.url, true)
-  console.log('result', result)
+  if (req.url !== '/favicon.ico') {
+    const result = url.parse(req.url, true)
+    console.log(result)
+    // console.log(result.query.key1)
+  }
   // 要指定请求头，否则不会解析为html
+  // 状态码：200,文件类型:html,字符集:utf-8
   res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8'
   })

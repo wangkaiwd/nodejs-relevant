@@ -44,21 +44,27 @@
 // console.log(headAndTail(1, 2, 3, 4, 5)) // [1,[2,3,4,5]]
 
 // 嵌套的箭头函数
-const plus1 = a => a + 2
-const mutl2 = a => a * 2
-const pipeline = (...func) => val => {
-  // 传入的后一个函数的参数是前一个函数的执行结果
-  let result
-  for (let i = 0; i < func.length; i++) {
-    const fPrev = func[i]
-    const fNext = func[i + 1]
-    if (fNext) {
-      result = fNext(fPrev(val))
-    }
-  }
-  return result
-}
+// const plus1 = a => a + 2
+// const mutl2 = a => a * 2
+// const pipeline = (...func) => val => {
+//   // 传入的后一个函数的参数是前一个函数的执行结果
+//   let result
+//   for (let i = 0; i < func.length; i++) {
+//     const fPrev = func[i]
+//     const fNext = func[i + 1]
+//     if (fNext) {
+//       result = fNext(fPrev(val))
+//     }
+//   }
+//   return result
+// }
+
+// 嵌套的箭头函数
+// 比较优雅的写法
+// const plus1 = a => a + 2
+// const mutl2 = a => a * 2
+// const pipeline = (...func) =>
+  // val => func.reduce((val, b) => b(val), val)
 
 // 调用 pipeline(plus1,mutl2)(5)
-console.log(pipeline(plus1, mutl2)(5))
-// 在箭头函数中，this对象的指向是固定的，可以通过双冒号运算符改变
+// console.log(pipeline(plus1, mutl2)(5)) // 14

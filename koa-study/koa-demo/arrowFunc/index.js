@@ -101,5 +101,6 @@
 // arguments对象不是数组，而是一个类似的数组。而rest参数是一个真正的数组
 
 // rest参数之后不能在有其它参数(即只能是最后一个参数),否则会报错
-// function f(a, ...b, c) { Rest parameter must be last formal parameter
+// function f(a, ...b, c) { //Rest parameter must be last formal parameter
+//   // some code
 // }

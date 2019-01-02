@@ -31,17 +31,22 @@ function* helloWorldGenerator() {
 }
 
 // 调用generator函数后，该函数并不执行，返回的也不是函数运行结果，而是一个指向内部状态的指针对象：遍历器对象
-const hw = helloWorldGenerator();
+// const hw = helloWorldGenerator();
 
 // 调用next方法，使得指针移向下一个状态。
 
 // 第一次调用,gengrator函数开始执行，直到遇到第一个yield表达式为止
-console.log(hw.next()) // {value: 'hello', done: false}
+// console.log(hw.next()) // {value: 'hello', done: false}
 // 第二次调用，generator函数从上次yield表达式停下的地方，一直执行到下一个yield表达式
-console.log(hw.next()) // {value: 'world', done: false}
+// console.log(hw.next()) // {value: 'world', done: false}
 // 第三次调用，generator函数从上次yield表达式停下的地方，一直执行到return语句（如果没有return语句，就执行到函数结束）
-console.log(hw.next()) // {value: 'ending', done: true}
-console.log(hw.next()) // {value: undefined, done: true} ，以后再调用next方法，都会返回这个值
+// console.log(hw.next()) // {value: 'ending', done: true}
+// console.log(hw.next()) // {value: undefined, done: true} ，以后再调用next方法，都会返回这个值
 
 // 总结：generator函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行
 
+function* gen() {
+  yield 123 + 456;
+}
+const it = gen()
+console.log('gen', it.next())

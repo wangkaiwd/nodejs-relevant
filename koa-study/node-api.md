@@ -21,6 +21,10 @@
 ### 常用`api`学习
 #### `fs.readFile`
 
+## `path`模块
+
+### 常用`api`学习
+
 ## `util`模块
 ### 常用`api`学习
 #### `util.promisify`

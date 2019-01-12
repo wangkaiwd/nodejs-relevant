@@ -8,11 +8,13 @@
     "latest": "^0.2.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "nodemon": "^1.18.9"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -w koa-demo --exec \"babel-node koa-demo/modules/demo2.js --presets env\""
   },
   "keywords": [],
   "author": "",

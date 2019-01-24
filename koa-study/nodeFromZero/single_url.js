@@ -1,11 +1,12 @@
-const tools = require('./_tool_add')
-const wkTools = require('./wk-modules')
-console.log('wkTools', wkTools)
-console.log('tools', tools.add())
-
-
-const url = require('url')
-console.log('parse', url.parse('http://www.baidu.com'))
+const tools = require('./_tool_add');
+//如果node在当前目录没有找到mul_tool文件，就会取node_modules里面去查找
+const toolsSelfModule = require('mul_tool');
+const wkTools = require('./wk-modules');
+console.log('wkTools', wkTools);
+console.log('tools', tools.sum(1, 2, 3));
+console.log('selfModule', toolsSelfModule);
+const url = require('url');
+console.log('parse', url.parse('http://www.baidu.com'));
 // parse Url {
 //   protocol: 'http:',
 //   slashes: true,
@@ -21,7 +22,7 @@ console.log('parse', url.parse('http://www.baidu.com'))
 //   href: 'http://www.baidu.com/' }
 
 // 解析一个完整的路径
-console.log('parse1', url.parse('http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument'))
+console.log('parse1', url.parse('http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument'));
 // parse1 Url {
 //   protocol: 'http:',
 //   slashes: true,
@@ -50,11 +51,10 @@ console.log('format', url.format({
   query: 'key1=value1&key2=value2',
   pathname: '/path/to/myfile.html',
   path: '/path/to/myfile.html?key1=value1&key2=value2',
-  href:
-    'http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument'
-}))
+  href: 'http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument'
+}));
 // format http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
 
 // url.resolve():
-console.log('resovle', url.resolve('http://www.baidu.com', 'wk')) // http://www.baidu.com/wk
-console.log('resovle', url.resolve('http://www.baidu.com/hh', 'wk')) // http://www.baidu.com/wk
+console.log('resovle', url.resolve('http://www.baidu.com', 'wk')); // http://www.baidu.com/wk
+console.log('resovle', url.resolve('http://www.baidu.com/hh', 'wk')); // http://www.baidu.com/wk

@@ -2,7 +2,13 @@
  * Created by wangkai on 2019/1/25
  * Desc: get demo2,结合post请求
  */
+const parsePostData = (ctx) => {
+  return new Promise((resolve, reject) => {
+    ctx.req.on('data', () => {
 
+    });
+  });
+};
 const port = 8088;
 const Koa = require('koa');
 const app = new Koa();

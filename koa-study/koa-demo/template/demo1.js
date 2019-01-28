@@ -5,7 +5,7 @@ const app = new Koa();
 const getDir = dir => path.resolve(__dirname, dir);
 const compiledFunction = pug.compileFile(getDir('./pugPage/demo.pug'));
 app.use(async (ctx, next) => {
-  ctx.response.writeHead = 'text/html;charset=utf-8';
+  ctx.type = 'text/html;charset=utf-8';
   const html = compiledFunction({name: '张伟', title: '测试标题'});
   ctx.body = html;
 });

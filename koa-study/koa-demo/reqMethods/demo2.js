@@ -2,12 +2,32 @@
  * Created by wangkai on 2019/1/25
  * Desc: get demo2,结合post请求
  */
+// 直接返回字符串
 const parsePostData = (ctx) => {
   return new Promise((resolve, reject) => {
-    ctx.req.on('data', () => {
-
-    });
+    try {
+      let postData = '';
+      ctx.req.on('data', data => {
+        postData += data;
+      });
+      ctx.req.on('end', () => {
+        resolve(postData);
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
+};
+// 将字符串处理成对象格式
+const parseQueryStr = (queryStr) => {
+  let queryData = {};
+  const queryArray = queryStr.split('&');
+  for (let item of queryArray) {
+    const array = item.split('=');
+    const key = decodeURIComponent(array[0]), value = decodeURIComponent(array[1]);
+    queryData[key] = value;
+  }
+  return queryData;
 };
 const port = 8088;
 const Koa = require('koa');
@@ -26,7 +46,8 @@ app.use(async (ctx) => {
     `;
     ctx.body = htmlTemplate;
   } else if (ctx.url === '/' && ctx.method === 'POST') { // post请求
-    ctx.body = '接收到请求';
+    const postData = await parsePostData(ctx);
+    ctx.body = parseQueryStr(postData);
   } else { // 其它请求
     ctx.body = `<h1>404：page not found</h1>`;
   }

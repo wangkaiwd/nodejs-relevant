@@ -8,8 +8,8 @@ const Koa = require('koa');
 const path = require('path');
 const app = new Koa();
 
+// 在访问pug文件的时候会自动下载
 app.use(serve(path.resolve(__dirname, './')));
-// app.use(serve(path.resolve(__dirname, './test')));
 
 app.listen(3000, () => {
   console.log(`服务已启动，监听3000端口`);

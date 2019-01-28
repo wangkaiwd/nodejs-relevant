@@ -31,7 +31,7 @@ import { readFile, writeFileSync, writeFile } from 'fs'
 
 // 问题：1.写文件的代码导致node服务一直在重启 2. path.resolve还是不清楚有什么作用
 // path.resolve: 接受多个参数，依次表示所要进入的路径，直到将最后一个参数转为绝对路径
-// 拼接规则： 
+// 拼接规则：
 //  1. '/': 会被当成根路径来进行拼接
 //  2. 'a': 如果字符串前边没有任何字符，会解析为当前路径:'./'
 // console.log('路径1', resolve('foo/bar', '/tmp/file/', '..', 'a/../subfile')) // /temp/subfile

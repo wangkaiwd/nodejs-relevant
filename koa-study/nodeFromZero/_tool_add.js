@@ -4,7 +4,6 @@ const tools = {
     for (let number of numbers) {
       sum += number;
     }
-    console.log('sum', sum);
     return sum;
   }
 };

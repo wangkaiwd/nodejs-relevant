@@ -9,7 +9,7 @@ const fs = require('fs'); // 文件系统
 // fs.rmdir: 删除目录
 // fs.unlink: 删除文件
 
-// fs.stat('index.js', (error, stats) => {
+// fs.stat('tools.js', (error, stats) => {
 
 // })
 

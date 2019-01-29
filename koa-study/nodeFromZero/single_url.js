@@ -1,7 +1,7 @@
 const tools = require('./_tool_add');
 //如果node在当前目录没有找到mul_tool文件，就会取node_modules里面去查找
 const toolsSelfModule = require('mul_tool');
-const wkTools = require('./wk-modules');
+const wkTools = require('./node_modules/wk-module/tools');
 console.log('wkTools', wkTools);
 console.log('tools', tools.sum(1, 2, 3));
 console.log('selfModule', toolsSelfModule);

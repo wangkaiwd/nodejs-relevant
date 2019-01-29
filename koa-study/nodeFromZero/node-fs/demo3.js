@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const resolve = dir => path.resolve(__dirname, dir);
+// 如果fs.stat 方法中传入的callback方法中err存在的话，说明目录不存在，需要进行创建
 fs.stat(resolve('./upload'), (err, stats) => {
   if (err) {
     fs.mkdir(resolve('./upload'), (err) => {

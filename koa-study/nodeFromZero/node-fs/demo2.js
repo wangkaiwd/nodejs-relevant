@@ -24,21 +24,46 @@ const fs = require('fs');
  *  file: 文件名或文件描述符
  *  data(String|Buffer)
  *
- *  callback
+ *  callback: 回调函数
  */
-fs.writeFile('test.js', 'console.log("hello wk")', err => {
-  if (err) {
-    console.log(err);
-    return false;
-  } else {
-    console.log('写入成功');
-  }
-});
-fs.appendFile('test.js', '; \nvar str = "这段文字是追加的内容"', err => {
-  if (err) {
-    console.log(err);
-    return false;
-  } else {
-    console.log('追加成功!');
-  }
-});
+// fs.writeFile('test.js', 'console.log("hello wk")', err => {
+//   if (err) {
+//     console.log(err);
+//     return false;
+//   } else {
+//     console.log('写入成功');
+//   }
+// });
+// fs.appendFile('test.js', '; \nvar str = "这段文字是追加的内容"', err => {
+//   if (err) {
+//     console.log(err);
+//     return false;
+//   } else {
+//     console.log('追加成功!');
+//   }
+// });
+// fs.readFile('./test.js', (err, data) => {
+//   if (err) throw err;
+//   console.log('文件读取成功!');
+//   console.log(data);
+//   // <Buffer 63 6f 6e 73 6f 6c 65 2e 6c 6f 67 28 22e5 ad 97 e6 ... >
+//   console.log(String(data));
+//   // console.log("hello wk");
+//   // var str = "这段文字是追加的内容"
+// });
+// 回调函数中files: 目录中的文件名的数组，不包括'.'和'..'
+// fs.readdir('../node_modules', (err, files) => {
+//   if (err) throw err;
+//   console.log('读取目录成功!');
+//   console.log(files);
+// });
+/**
+ * 将oldPath上的文件重命名为newPath提供的路径名。在newPath已经存在的情况下，它将被覆盖（相当于剪切）
+ * oldPath
+ * newPath
+ * callback
+ */
+// fs.rename('./test.js', './testRename.js', err => {
+//   if (err) throw err;
+//   console.log('重命名成功！');
+// });

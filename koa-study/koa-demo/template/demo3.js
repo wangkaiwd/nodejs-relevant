@@ -14,3 +14,4 @@ app.use(serve(path.resolve(__dirname, './')));
 app.listen(3000, () => {
   console.log(`服务已启动，监听3000端口`);
 });
+// todo:为什么在访问.pug文件的时候会自动下载？

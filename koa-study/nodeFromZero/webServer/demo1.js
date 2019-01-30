@@ -13,6 +13,19 @@
   //  3. 当上述资源在加载的时候，都会对服务器发起请求，相应的都会触发createServer的监听事件
   //  4. 根据请求资源的不同，要设置对应的响应头: Content-Type进行返回给客户端
 
+// MIME类型：一种标准化的方式来表示文档的性质和格式
+//  浏览器通常使用MIME类型（而不是文件扩展名）来确定如何处理文档；因此服务器设置正确以将正确的MIME类型
+//  附加到响应对象的头部是非常重要的
+
+// 常用的MIME类型： application/octet-stream: 应用程序文件的默认值
+  //  1. text/plain : 文本文件默认值
+  //  2. text/css: 在网页中要被解析为CSS的任何CSS文件必须指定MIME为text/css。
+  //  3. text/html: 所有的html内容都应该使用这种类型
+  //  4. application/javascript: js文件
+  //  5. image/gif: gif图片
+  //  6. image/jpeg: JPEG图片
+  //  7. image/png: PNG图片
+  //  8. image/svg+xml: SVG图片（矢量图）
 const http = require('http');
 const fs = require('fs');
 const url = require('url');
@@ -23,22 +36,6 @@ const path = require('path');
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url);
   let resFile = pathname;
-  // switch (pathname) {
-  //   case '/':
-  //     // 直接读取进行加载，只能解析html文件，而在html中引入的css和js无法解析
-  //     // fs.readFile(path.resolve(__dirname, './template/index.html'), (err, data) => {
-  //     //   // res.writeHead(200, {
-  //     //   //   'Content-Type': 'text/html;charset=utf-8'
-  //     //   // });
-  //     //   res.write(data);
-  //     //   res.end();
-  //     // });
-  //     resFile = 'index.html';
-  //     break;
-  //   default:
-  //     resFile = '404.html';
-  //     break;
-  // }
   if (pathname === '/') {
     resFile = 'index.html';
   }

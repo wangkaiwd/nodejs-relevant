@@ -41,12 +41,30 @@ const server = http.createServer((req, res) => {
   }
   const ext = path.extname(resFile).slice(1);
   fs.readFile(path.resolve(__dirname, `./template/${resFile}`), (err, data) => {
-    if (err) throw err;
-    res.writeHead(200, {
-      'Content-Type': `text/${ext};charset=utf-8`
-    });
-    res.write(data);
-    res.end();
+    // 如果没有这个文件地址的话，就会报错:
+    if (err) {
+      // ENOENT(无此文件或目录)：通常是由fs操作引起的，表明指定的路径不存在，即给定的路径找不到文件或目录
+      // 如果不存在这个文件:
+      // err {code: "ENOENT', code: -4058, message: 'ENOENT: no such file or directory, open '当前读取的路径'"}
+      console.log(`404 not found`);
+      fs.readFile(path.resolve(__dirname, './template/404.html'), (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.writeHead(200, {
+            'Content-Type': 'text/html;charset=utf-8'
+          });
+          res.write(data);
+          res.end();
+        }
+      });
+    } else {
+      res.writeHead(200, {
+        'Content-Type': `text/${ext};charset=utf-8`
+      });
+      res.write(data);
+      res.end();
+    }
   });
 });
 

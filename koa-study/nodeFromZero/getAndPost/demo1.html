@@ -36,7 +36,8 @@
         ids: []
       };
     },
-    mounted () {
+    async mounted () {
+      await this.getTodoList();
       this.createId();
     },
     methods: {
@@ -47,9 +48,13 @@
           id: this.ids.slice(-1)[0],
           content: this.value
         };
-        this.toDos.push(tempObj);
+        // this.toDos.push(tempObj);
         this.value = '';
-        console.log('toDos', this.toDos);
+        axios.post('http://localhost:3000', tempObj).then(
+          res => {
+            this.toDos = res.data;
+          }
+        );
       },
       createId () {
         this.toDos.map((todo, i) => this.ids.push(i));
@@ -60,6 +65,14 @@
         // 0,-0,null,undefined,'',NaN转换为boolean值都是false
         const newId = this.ids.slice(-1)[0] + 1 || 0;
         this.ids.push(newId);
+      },
+      getTodoList () {
+        return axios.get('http://localhost:3000')
+          .then(
+            res => {
+              this.toDos = res.data;
+            }
+          );
       }
     }
   });

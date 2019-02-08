@@ -7,7 +7,7 @@
 * 创建服务器：监听客户端（浏览器）的请求，类似于`Apache,Nginx`等`HTTP`服务器
 * 接受请求并响应请求：客户端发送`HTTP`请求，服务器接收请求后返回响应数据
 
-接下来我们使用`Node.js`的核心模块`HTTP`来创建`Node.js`应用：[demo链接]()
+接下来我们使用`Node.js`的核心模块`HTTP`来创建`Node.js`应用：[demo链接](./01%20http/demo1.js)
 ```js
 // 引入http模块
 const http = require('http');
@@ -33,4 +33,4 @@ server.listen(port, err => {
 });
 ```
 在`demo`所在文件目录下打开终端执行`node demo1`，之后浏览器访问`localhost:3000`： 
-![http](./shotscreen/01http_demo1.png)
+![http](shotscreen/01http_demo1.png)

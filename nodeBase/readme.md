@@ -34,3 +34,18 @@ server.listen(port, err => {
 ```
 在`demo`所在文件目录下打开终端执行`node demo1`，之后浏览器访问`localhost:3000`： 
 ![http](shotscreen/01http_demo1.png)
+
+## `CommonJS`
+### 什么是`CommonJS`
+`CommonJS`就是为`JS`的表现来制定规范，由于`js`没有模块系统、标准库较少、缺乏包管理工具，所以`CommonJS`应运而生，它希望可以在`js`的任何地方运行，而不只是浏览器中，从而达到Java、C#、PHP这些后端语言具备开发大型应用的能力。
+### `CommonJS`的应用
+1. 服务端`javascript`应用程序(`Node.js`)
+2. 命令行工具
+3. 桌面图形界面应用程序
+### `CommonJS`与`Nodejs`的关系
+`CommonJS`是模块化的标准，`Nodejs`就是`CommonJS`(模块化)的实现
+### `Nodejs`中的模块化
+* 在`Node`中，模块分为俩类：一是`Node`自身提供的模块，称为核心模块；二是用户自己编写的模块，称为文件模块。核心模块在`Node`源代码的编译过程中，编译进了二进制执行文件，所以它的加载速度是最快的，如: HTTP模块，URL模块，FS模块；文件模块是在运行时动态加载的，需要完整的路径分析、文件定位、编译执行过程等......,所以它的速度相对核心模块来说会慢一些
+* 我们可以将公共的功能抽离出一个单独的`js`文件来存放，然后在需要的情况下通过`exports`或`module.exports`将模块导出，并通过`require`进行引入
+
+现在我们通过三种使用方式来学习`Node`中的模块化及`exports/require`的使用

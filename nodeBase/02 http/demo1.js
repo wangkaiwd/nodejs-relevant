@@ -1,6 +1,6 @@
 // 引入http模块
 const http = require('http');
-const port = 3000;
+const PORT = 3000;
 // 调用http的createServer方法来创建服务器，监听请求并响应请求
 const server = http.createServer((req, res) => {
   // 向请求发送响应头：状态码：200，文件类型：html,字符集：utf-8
@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
   res.end();
 });
 // 监听3000端口
-server.listen(port, err => {
+server.listen(PORT, err => {
   if (err) throw err;
-  console.log(`服务已启动，监听${port}端口`);
+  console.log(`server listening on port ${PORT}`);
 });

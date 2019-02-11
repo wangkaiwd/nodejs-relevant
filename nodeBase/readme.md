@@ -12,6 +12,22 @@
 * 在`Node`中，模块分为俩类：一是`Node`自身提供的模块，称为核心模块；二是用户自己编写的模块，称为文件模块。核心模块在`Node`源代码的编译过程中，编译进了二进制执行文件，所以它的加载速度是最快的，如: HTTP模块，URL模块，FS模块；文件模块是在运行时动态加载的，需要完整的路径分析、文件定位、编译执行过程等......,所以它的速度相对核心模块来说会慢一些
 * 我们可以将公共的功能抽离出一个单独的`js`文件来存放，然后在需要的情况下通过`exports`或`module.exports`将模块导出，并通过`require`进行引入
 
+这里通过代码简单描述一下`module.exports`和`exports`之间的联系，不过在工作中我们还是直接使用`module.exports`比较好，防止混淆: [demo链接](./01%20common/demo2.js)
+```js
+// 模拟exports的实现,注意：module.exports默认值是{}
+const require = () => {
+  ((module, exports) => {
+    // 模块代码
+    const doSomething = () => {};
+    // 重新赋值将不再和module.exports公用同一片内存空间
+    // 此时，模块导出一个空的默认对象
+    exports = doSomething;
+    // 此时，该模块导出doSomething,而不是默认空对象
+    module.exports = doSomething;
+  })(module, module.exports);
+};
+```
+
 现在我们通过三种使用方式来学习`Node`中的模块化及`exports/require`的使用
 
 **方法一：**
@@ -114,6 +130,8 @@ http.createServer((req, res) => {
   console.log(`server listening on port 3000`);
 });
 ```
+打开浏览器输入`localhost:3000`就可以看到我们的执行结果了:
+![commonJS](./shotscreen/01commonJS_demo1.png)
 ### `npm`与包
 > `npm`是世界上最大的开放源代码生态系统。我们可以通过`npm`下载各种各样的第三方模块(package：包)。在安装`Node`的时候，会默认安装`npm`。
 

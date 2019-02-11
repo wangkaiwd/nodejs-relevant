@@ -15,7 +15,7 @@
 现在我们通过三种使用方式来学习`Node`中的模块化及`exports/require`的使用
 
 **方法一：**
-> 当前目录: 01 common/myTools/tool1.js
+> 当前目录: [01 common/myTools/tool1.js](./01%20common/myTools/tool1.js)
 ```js
 // 定义一个工具模块
 const tools = {
@@ -43,10 +43,76 @@ module.exports = tools; // {add: Function}
 1. 我们自己定义了一个`tools`工具库
 2. 通过`module.exports`将`tools`导出
 
-接下来，我们就可以通过`require`引入我们自己定义的工具库并进行使用
-> 当前目录：01 common/demo1.js
-```js
+当模块文件较多的时候，代码会比较乱，这时候需要统一管理，`Node`为我们提供了`node_modules`目录来统一存放我们的第三方模块，所以接下来我们要介绍方法二和方法三
 
+**方法二**:
+
+　如果将第三方模块放入到`node_modules`中让`nodejs`来帮我们管理的话，引入的时候不需要再使用`./`或者`../`,可以直接使用模块名。这样`node`会首先在当前目录下进行查找，如果没有找到的话会进入到`node_modules`中进行查找
+> 当前目录: [01 common/node_modules](./01%20common/node_modules/tool2.js)
+```js
+const tools = {
+  multiply (...numbers) {
+    const result = numbers.reduce((count, item) => count * item);
+    return result;
+  }
+};
+
+module.exports = tools;
+```
+
+**方法三**：
+
+通过`package.json`来引入文件： 
+1. 在当前目录(tool3,即第三方模块的根目录下)执行`npm init -y`生成`package.json`文件
+2. `package.json`文件中会告诉我们程序的入口文件: `"main": "tool.js"`
+3. `nodejs`通过`require`查找到`tool3`，发现目录下有`package.json`文件
+4. `node`执行`package.json`中写明的入口文件`tool.js`
+> 当前目录： [01 common/node_modules/tool3/tool.js](./01%20common/node_modules/tool3/tool.js)
+```js
+const tool = {
+  add (...numbers) {
+    const sum = numbers.reduce((count, item) => count + item);
+    return sum;
+  },
+  multiply (...numbers) {
+    const result = numbers.reduce((count, item) => count * item);
+    return result;
+  }
+};
+module.exports = tool;
+```
+
+##### 小节
+接下来，我们分别使用三种方法来实现模块的引入并使用
+> 当前目录：[01 common/demo1.js](./01%20common/demo1.js)
+```js
+// 自定义模块
+const tool1 = require('./myTools/tool1');
+// 通过node_modules进行包管理
+const tool2 = require('tool2');
+// 通过`package.json`中的入口文件导入模块
+const tool3 = require('tool3');
+const http = require('http');
+http.createServer((req, res) => {
+  const result1 = tool1.add(1, 2, 3, 4);
+  const result2 = tool2.multiply(1, 2, 3, 4);
+  const result3 = tool3.add(1, 2, 3, 4) + tool3.multiply(1, 2, 3, 4);
+  res.writeHead(200, {
+    'Content-Type': 'text/html;charset=utf-8'
+  });
+  const html = `
+    <div>
+      <h1>tool1: evaluate is ${result1}</h1>
+      <h1>tool2: evaluate is ${result2}</h1>
+      <h1>tool3: evaluate is ${result3}</h1>
+    </div>
+  `;
+  res.write(html);
+  res.end();
+}).listen(3000, err => {
+  if (err) throw err;
+  console.log(`server listening on port 3000`);
+});
 ```
 ### `npm`与包
 > `npm`是世界上最大的开放源代码生态系统。我们可以通过`npm`下载各种各样的第三方模块(package：包)。在安装`Node`的时候，会默认安装`npm`。

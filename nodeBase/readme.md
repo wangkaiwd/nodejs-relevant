@@ -196,6 +196,10 @@ server.listen(PORT, err => {
 ![http](shotscreen/02http_demo1.png)
 
 ### `url`模块
+`url`模块用于处理于解析`URL`。使用方法如下：
+```js
+const url = require('url')
+```
 
 ### `fs`文件系统
 

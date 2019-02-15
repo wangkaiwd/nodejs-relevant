@@ -317,7 +317,23 @@ http.createServer((req, res) => {
     ```
 2. `url.format`
     ```js
-
+    // 将URL对象转换为URL字符串
+    url.format({
+      protocol: null,
+      slashes: null,
+      auth: null,
+      host: null,
+      port: null,
+      hostname: null,
+      hash: null,
+      search: '?name=zhangsan&age=14',
+      query: { name: 'zhangsan', age: '14' },
+      pathname: 'www.baidu.com/new',
+      path: 'www.baidu.com/new?name=zhangsan&age=14',
+      href: 'www.baidu.com/new?name=zhangsan&age=14' 
+    })
+    // Console:
+    // www.baidu.com/new?name=zhangsan&age=14
     ```
 3. `url.resolve`
     ```js

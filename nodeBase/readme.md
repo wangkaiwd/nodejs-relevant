@@ -201,6 +201,19 @@ server.listen(PORT, err => {
 const url = require('url')
 ```
 
+`Web`中的[`URL`](https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_URL): 统一资源定位符
+
+一个`URL`由不同的部分组成，其中一些是必须的，而另一些是可选的。我们以下面的`URL`为例，学习一下其中最重要的部分:
+```
+http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+```
+* 协议： `http://`(Protocol),表明浏览器必须要使用何种协议
+* 域名：`www.example.com`(Domain Name),表明正在请求哪个`Web`服务器
+* 端口: `:80`(Port),表示用于访问`Web`服务器上的资源的技术"门"
+* 网络服务器上资源的路径：`/path/to/myfile.html`(Path to the file)
+* 提供给网路服务的额外参数: `?key1=value1&key2=value2`(Parameters),这些参数是用`&`符号分割的键值对列表
+* 资源本身的另一部分锚点：`#SomewhereInTheDocument`(Anchor)
+
 ### `fs`文件系统
 
 ### `path`路径操作

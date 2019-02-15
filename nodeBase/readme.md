@@ -226,6 +226,8 @@ http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereI
 * 提供给网路服务的额外参数: `?key1=value1&key2=value2`(Parameters),这些参数是用`&`符号分割的键值对列表
 * 资源本身的另一部分锚点：`#SomewhereInTheDocument`(Anchor)
 
+> 当前目录：[03 url/demo2.js](./03%20url/demo2.js)
+
 接下来，我们通过一个例子来演示`NodeJS`中的`URL`模块,来解析请求地址中的额外参数:  
 ```js
 // 1.引入http模块
@@ -278,6 +280,7 @@ http.createServer((req, res) => {
 在代码中我们通过`url.parse`方法对请求路径进行解析，并通过`query`属性获取到了额外参数，接下来我们继续学习`url`模块的其它`api`
 
 #### 常用`api`
+> 当前目录：[03 url/demo2.js](03%20url/demo2.js)
 1. `url.parse`
     ```js
     url.parse('www.baidu.com/new?name=zhangsan&age=14')
@@ -337,8 +340,22 @@ http.createServer((req, res) => {
     ```
 3. `url.resolve`
     ```js
-    
+    // 以一种`web`浏览器解析超链接的方式把一个目标URL解析成相对于一个基础URL
+    console.log(url.resolve('/one/two/three', '/four'));
+    // /four
+    console.log(url.resolve('/one/two/three', 'four'));
+    // /one/two/four
+    console.log(url.resolve('http://example.com', 'one'));
+    // http://example.com/one
+    console.log(url.resolve('http://example.com/one', 'two'));
+    // http://example.com/two
+    console.log(url.resolve('http://example.com/one/', 'two'));
+    // http://example.com/one/two
+    console.log(url.resolve('http://example.com/one', '/two'));
+    // http://example.com/two
     ```
+    
+这里只介绍了几个稍微常用一些的`api`,更多的`url`相关`api`可以去`node`官网深入学习: [`url-URL`](http://nodejs.cn/api/url.html)
 
 ### `fs`文件系统
 

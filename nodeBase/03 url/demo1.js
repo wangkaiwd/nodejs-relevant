@@ -10,7 +10,7 @@ http.createServer((req, res) => {
     /**
      * url.parse方法一般需要2个参数
      *  1. url地址
-     *  2. 如果传入true,通过key1=val1&key2=val2&key3=val3传递的参数会转换为对象
+     *  2. 如果传入true,通过key1=val1&key2=val2&key3=val3传递的额外参数会转换为对象
      */
     const result = url.parse(req.url, true);
     console.log(result);
@@ -28,6 +28,13 @@ http.createServer((req, res) => {
     //     path: '/?pageSize=10&pageIndex=2',
     //     href: '/?pageSize=10&pageIndex=2'
     // }
+    let html = '', extraParams = result.query;
+    for (let key in extraParams) {
+      html += `<h3>${key}:${extraParams[key]}</h3>`;
+    }
+    res.setHeader('Content-Type', 'text/html;charset=utf-8');
+    res.write(html);
+    res.end();
   }
 }).listen(PORT, err => {
   if (err) throw err;

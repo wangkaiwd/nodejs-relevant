@@ -201,7 +201,7 @@ server.listen(PORT, err => {
 const url = require('url')
 ```
 
-`Web`中的[`URL`](https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_URL): 统一资源定位符
+**`Web`中的[`URL`](https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_URL): 统一资源定位符**
 
 一个`URL`由不同的部分组成，其中一些是必须的，而另一些是可选的。我们以下面的`URL`为例，学习一下其中最重要的部分:
 ```
@@ -214,6 +214,53 @@ http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereI
 * 提供给网路服务的额外参数: `?key1=value1&key2=value2`(Parameters),这些参数是用`&`符号分割的键值对列表
 * 资源本身的另一部分锚点：`#SomewhereInTheDocument`(Anchor)
 
+接下来，我们通过一个例子来演示`NodeJS`中的`URL`模块,来解析请求地址中的额外参数:  
+```js
+// 1.引入http模块
+const http = require('http');
+// 2.引入url模块
+const url = require('url');
+const PORT = 3000;
+// 3. http模块创建服务
+http.createServer((req, res) => {
+  // 4. 浏览器访问地址：localhost:3000?pageSize=10&pageIndex=2
+  if (req.url !== '/favicon.ico') {
+    /**
+     * url.parse方法一般需要2个参数
+     *  1. url地址
+     *  2. 如果传入true,通过key1=val1&key2=val2&key3=val3传递的额外参数会转换为对象
+     */
+    const result = url.parse(req.url, true);
+    console.log(result);
+    // Url {
+    //   protocol: null,
+    //     slashes: null,
+    //     auth: null,
+    //     host: null,
+    //     port: null,
+    //     hostname: null,
+    //     hash: null,
+    //     search: '?pageSize=10&pageIndex=2',
+    //     query: [Object: null prototype] { pageSize: '10', pageIndex: '2' },
+    //   pathname: '/',
+    //     path: '/?pageSize=10&pageIndex=2',
+    //     href: '/?pageSize=10&pageIndex=2'
+    // }
+    let html = '', extraParams = result.query;
+    for (let key in extraParams) {
+      html += `<h3>${key}:${extraParams[key]}</h3>`;
+    }
+    res.setHeader('Content-Type', 'text/html;charset=utf-8');
+    res.write(html);
+    res.end();
+  }
+}).listen(PORT, err => {
+  if (err) throw err;
+  console.log(`server listening on port ${PORT}`);
+});
+```
+浏览器访问`http://localhost:3000/?pageSize=10&pageIndex=2`: 
+![03url/demo1](./shotscreen/03url_demo1.png)
 ### `fs`文件系统
 
 ### `path`路径操作

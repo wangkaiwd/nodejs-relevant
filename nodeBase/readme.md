@@ -159,6 +159,18 @@ npm i webpack-bundle-analyzer -S
 npm i axios -D
 ```
 
+在实际项目中，我们会通过`package.json`来对使用`npm`安装的第三方模块进行管理。如果我们需要创建`package.json`,那我们应该在指定的包管理目录中通过以下命令进行生成：
+```
+npm init : 按步骤创建`package.json`
+npm init -y : 快速创建`package.json`
+```
+
+由于国内网络的原因，有时候通过`npm`下载包可能会很慢或直接卡掉，这时候需要我们修改下载源为淘宝源：
+```
+npm config set registry http://registry.npm.taobao.org/
+```
+这里为大家推荐一个好用的工具来进行`npm`下载源的管理：[nrm](https://github.com/Pana/nrm)
+
 ### 创建第一个`Nodejs`应用
 > 通过向客户端返回一个最简单的'Hello World'来初步接触`Nodejs`
 

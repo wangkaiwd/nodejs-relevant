@@ -271,8 +271,59 @@ http.createServer((req, res) => {
   console.log(`server listening on port ${PORT}`);
 });
 ```
+
 浏览器访问`http://localhost:3000/?pageSize=10&pageIndex=2`: 
 ![03url/demo1](./shotscreen/03url_demo1.png)
+
+在代码中我们通过`url.parse`方法对请求路径进行解析，并通过`query`属性获取到了额外参数，接下来我们继续学习`url`模块的其它`api`
+
+#### 常用`api`
+1. `url.parse`
+    ```js
+    url.parse('www.baidu.com/new?name=zhangsan&age=14')
+    /**
+    *Url {
+       protocol: null,
+       slashes: null,
+       auth: null,
+       host: null,
+       port: null,
+       hostname: null,
+       hash: null,
+       search: '?name=zhangsan&age=14',
+       query: 'name=zhangsan&age=14',
+       pathname: 'www.baidu.com/new',
+       path: 'www.baidu.com/new?name=zhangsan&age=14',
+       href: 'www.baidu.com/new?name=zhangsan&age=14' } 
+    */
+    // 传入第二个参数来将额外参数处理为对象格式
+    url.parse('www.baidu.com/new?name=zhangsan&age=14', true)
+    // query属性是一个对象
+    /**
+    *Url {
+       protocol: null,
+       slashes: null,
+       auth: null,
+       host: null,
+       port: null,
+       hostname: null,
+       hash: null,
+       search: '?name=zhangsan&age=14',
+       query: [Object: null prototype] { name: 'zhangsan', age: '14' },
+       pathname: 'www.baidu.com/new',
+       path: 'www.baidu.com/new?name=zhangsan&age=14',
+       href: 'www.baidu.com/new?name=zhangsan&age=14' }
+    */
+    ```
+2. `url.format`
+    ```js
+
+    ```
+3. `url.resolve`
+    ```js
+    
+    ```
+
 ### `fs`文件系统
 
 ### `path`路径操作

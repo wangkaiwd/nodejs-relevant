@@ -16,7 +16,7 @@
 * `show collection`:显示数据库中所有的集合
 
 ## [数据库`CRUD`操作](http://www.mongoing.com/docs/crud.html)
-[`CRUD`](https://developer.mozilla.org/zh-CN/docs/Glossary/CRUD):
+[`CRUD`](https://developer.mozilla.org/zh-CN/docs/Glossary/CRUD):（创建：Create,读取：Read,更新: Update,删除：Delete）是对于存储的信息可以进行操作的同义词。是一个对四种操作持久化信息的基本操作的助记符。
 
 首先我们新建一个`demo`数据库，在`demo`数据库下进行增删改查的演示
 ```

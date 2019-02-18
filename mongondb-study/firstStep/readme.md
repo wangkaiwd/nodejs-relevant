@@ -42,7 +42,7 @@ db.test.insert({name:'wk4',age: 22,job:'job2'})
 ```
 
 ### 使用可视化工具
-这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com,下载的时候选择`Freeware`免费版
+这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 
 这里介绍一下简单的使用方法：
 ![tools01](../screenshots/mongoTools01.png)

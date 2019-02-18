@@ -358,6 +358,18 @@ http.createServer((req, res) => {
 这里只介绍了几个稍微常用一些的`api`,更多的`url`相关`api`可以去`node`官网深入学习: [`url-URL`](http://nodejs.cn/api/url.html)
 
 ### `fs`文件系统
+`fs`提供了一系列`API`,来让`NodeJS`可以与操作系统的文件进行交互。所有文件系统操作都有同步和异步的形式，大多数情况下我们会使用异步形式，防止进程阻塞，提供性能
+
+这里我们通过下面的几个`API`来学习`fs`文件系统：
+1. `fs.stat`: 检测正在处理的是文件还是目录
+2. `fs.mkdir`: 创建目录
+3. `fs.writeFile`：将数据写入文件，如果文件存在则覆盖该文件
+4. `fs.appendFile`: 将数据追加到文件，如果文件尚不存在则创建该文件
+5. `fs.readFile`: 读取文件的全部内容
+6. `fs.readdir`：读取目录内容
+7. `fs.rename`: 文件重命名
+8. `fs.rmdir`: 删除目录
+9. `fs.unlink`: 删除文件
 
 ### `path`路径操作
 

@@ -23,22 +23,23 @@
 use demo
 ```
 ### 插入文档
-* `db.<collection>.insert()`:向集合插入一个或多个文档
-    ```js
-    db.test.insert({name:'wk',age:18,job:'前端工程师'})
-    db.test.insert([
-      {name:'wk1',age:19,job:'UI'},
-      {name:'wk2',age:20,job:'后端工程师'}
-    ])
-    ```
-* `db.<collection>.insertOne()`：向集合插入单个文档
-    ```js
-    db.test.insert({name:'wk3',age:21,job:'job1'})
-    ```
-* `db.<collection>.insertMany()`：向集合插入多个文档
-    ```js
-    db.test.insert({name:'wk4',age: 22,job:'job2'})
-    ```
+`db.<collection>.insert()`:向集合插入一个或多个文档
+```js
+db.test.insert({name:'wk',age:18,job:'前端工程师'})
+db.test.insert([
+  {name:'wk1',age:19,job:'UI'},
+  {name:'wk2',age:20,job:'后端工程师'}
+])
+```
+
+`db.<collection>.insertOne()`：向集合插入单个文档
+```js
+db.test.insert({name:'wk3',age:21,job:'job1'})
+```
+`db.<collection>.insertMany()`：向集合插入多个文档
+```js
+db.test.insert({name:'wk4',age: 22,job:'job2'})
+```
 
 ### 使用可视化工具
 这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com,下载的时候选择`Freeware`免费版

@@ -371,13 +371,14 @@ http.createServer((req, res) => {
 8. `fs.rmdir`: 删除目录
 9. `fs.unlink`: 删除文件
 
-**`fs`操作的第一个参数如果是文件路径的话，相对路径将相对于`process.cwd()`指定的当前工作目录进行解析**
+**这里需要留意：`fs`操作的第一个参数如果是文件路径的话，相对路径将相对于`process.cwd()`指定的当前工作目录进行解析**
+> 当前目录：[04 fs/demo1.js](./04%20fs/demo1.js)
 
 首先，我们通过`fs.stat`检测当前操作的内容是文件还是目录：
 ```js
 const fs = require('fs');
 
-fs.stat('./test.txt', (err, stats) => {
+fs.stat('./statTest.txt', (err, stats) => {
   if (err) throw err;
   // fs.Stats对象：提供有关文件的信息
   console.log('stats', stats);
@@ -409,6 +410,7 @@ fs.stat('./test.txt', (err, stats) => {
 ```
 
 然后，我们进行目录的删除和创建:
+> 当前目录： [04 fs/demo2.js](./04%20fs/demo2.js)
 ```js
 const fs = require('fs');
 /**
@@ -416,7 +418,6 @@ const fs = require('fs');
 * 参数2：回调函数，用来传递错误信息
 */
 
-const fs = require('fs');
 
 fs.mkdir('./mkdirTest', (err) => {
   if (err) {
@@ -434,6 +435,7 @@ fs.mkdir('./mkdirTest', (err) => {
 执行代码后，浏览器控制台会提示错误信息，删除失败，之后会创建`mkdirTest`
 
 接着，我们进行文件数据的写入:
+> 当前目录：[04 fs/demo3.js](./04%20fs/demo3.js)
 ```js
 const fs = require('fs');
 /**
@@ -441,7 +443,6 @@ const fs = require('fs');
 * data: 要写入文件的内容(会覆盖原有内容)
 * callback: 处理错误信息
 */
-const fs = require('fs');
 
 fs.writeFile('./writeTest.txt', 'hello nodejs', (err) => {
   if (err) {
@@ -461,6 +462,32 @@ fs.writeFile('./writeTest.txt', 'hello nodejs', (err) => {
 ```
 执行上述代码后，首先会判断当前目录下是否有writeTest.txt文件，如果有的话，使用hello nodejs将原有内容覆盖，如果没有的话，会先创建writeTest.txt,然后在文件中写入hello nodejs。如果writeText文件写入成功的话，会继续删除文件
 
+对应于`fs.writeFile`覆盖文件，`fs.appendFile`提供了追加文件内容的功能：
+> 当前目录：[04 fs/demo4.js](./04%20fs/demo4.js)
+```js
+const fs = require('fs');
+/**
+* path: 文件路径
+* data: 追加的内容
+* callback: 处理错误信息
+*/
+fs.appendFile('./appendTest.txt', ',我是追加的内容', (err) => {
+  if (err) {
+    console.log('追加失败');
+    throw err;
+  }
+  console.log('追加成功');
+});
+```
+打开当前目录下的appendText.txt,发现内容由：
+```
+我是原来的内容
+```
+变成：
+```
+我是原来的内容
+,我是追加的内容
+```
 ### `path`路径操作
 
 ### 创建`Web`服务器

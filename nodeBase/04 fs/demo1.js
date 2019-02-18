@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-fs.stat('./test.txt', (err, stats) => {
+fs.stat('./statTest.txt', (err, stats) => {
   if (err) throw err;
   // fs.Stats对象：提供有关文件的信息
   console.log('stats', stats);

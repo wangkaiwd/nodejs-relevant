@@ -371,6 +371,96 @@ http.createServer((req, res) => {
 8. `fs.rmdir`: 删除目录
 9. `fs.unlink`: 删除文件
 
+**`fs`操作的第一个参数如果是文件路径的话，相对路径将相对于`process.cwd()`指定的当前工作目录进行解析**
+
+首先，我们通过`fs.stat`检测当前操作的内容是文件还是目录：
+```js
+const fs = require('fs');
+
+fs.stat('./test.txt', (err, stats) => {
+  if (err) throw err;
+  // fs.Stats对象：提供有关文件的信息
+  console.log('stats', stats);
+  // Stats {
+  //   dev: 2280844857,
+  //     mode: 33206,
+  //     nlink: 1,
+  //     uid: 0,
+  //     gid: 0,
+  //     rdev: 0,
+  //     blksize: undefined,
+  //     ino: 2251799813687678,
+  //     size: 0,
+  //     blocks: undefined,
+  //     atimeMs: 1550466987951.39,
+  //     mtimeMs: 1550466987951.39,
+  //     ctimeMs: 1550466987951.39,
+  //     birthtimeMs: 1550466987951.39,
+  //     atime: 2019-02-18T05:16:27.951Z,
+  //     mtime: 2019-02-18T05:16:27.951Z,
+  //     ctime: 2019-02-18T05:16:27.951Z,
+  //     birthtime: 2019-02-18T05:16:27.951Z }
+
+  // stats.isFile(): 如果操作的是文件，返回true
+  // stats.isDirectory(): 如果操作的是文件系统目录，则返回true
+  console.log(`文件：${stats.isFile()}`); // 文件: true
+  console.log(`目录：${stats.isDirectory()}`); // 目录：false
+});
+```
+
+然后，我们进行目录的删除和创建:
+```js
+const fs = require('fs');
+/**
+* 参数1：创建路径
+* 参数2：回调函数，用来传递错误信息
+*/
+
+const fs = require('fs');
+
+fs.mkdir('./mkdirTest', (err) => {
+  if (err) {
+    console.log(`创建失败 ${err.message}`);
+  }
+  console.log('目录创建成功');
+  fs.rmdir('./mkdirTest', (err) => {
+    if (err) {
+      console.log(`删除失败 ${err.message}`);
+    }
+    console.log('删除目录成功');
+  });
+});
+```
+执行代码后，浏览器控制台会提示错误信息，删除失败，之后会创建`mkdirTest`
+
+接着，我们进行文件数据的写入:
+```js
+const fs = require('fs');
+/**
+* path: 写入文件的路径，没有该文件会自动创建
+* data: 要写入文件的内容(会覆盖原有内容)
+* callback: 处理错误信息
+*/
+const fs = require('fs');
+
+fs.writeFile('./writeTest.txt', 'hello nodejs', (err) => {
+  if (err) {
+    console.log(`写入失败 ${err.message}`);
+    return;
+  }
+  console.log('写入数据成功');
+  // 删除writeTest.txt
+  fs.unlink('./writeTest.txt', (err) => {
+    if (err) {
+      console.log(`删除文件失败 ${err.message}`);
+      return;
+    }
+    console.log('删除文件成功');
+  });
+});
+```
+执行上述代码后，首先会判断当前目录下是否有writeTest.txt文件，如果有的话，使用hello nodejs将原有内容覆盖，如果没有的话，会先创建writeTest.txt,然后在文件中写入hello nodejs。如果writeText文件写入成功的话，会继续删除文件
+
 ### `path`路径操作
 
 ### 创建`Web`服务器

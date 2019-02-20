@@ -646,7 +646,7 @@ readdir.then(
 想要深入了解的话可以阅读`MDN`：[传送门](https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_web_server)
 
 当浏览器需要一个托管在网络服务器上的文件的时候，浏览器通过HTTP请求这个文件。当这个请求到达正确的网络服务器(硬件)时，HTTP服务器(软件)收到这个请求，找到这个被请求的文档(如果这个文档不存在，那么将返回一个404响应)，并把这个文档通过HTTP发送给浏览器。
-![](./shotscreen/06webServer_flow.png)
+![webServer_flow](./shotscreen/06webServer_flow.png)
 
 > 当前目录：06 webServer
 

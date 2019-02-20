@@ -118,8 +118,9 @@ db.test.find()
 `db.<collection>.updateOne`: 更新一个符合条件的文档
 
 ### 删除文档
+一般数据库中的数据都不会删除，所以删除对应的`api`会很少调用。一般会在数据中添加一个字段，来表示数据是否被删除。
 
-* `db.<collection>.remove`: 删除单个文档或与指定过滤条件匹配的所有文档
+* `db.<collection>.remove`: 删除单个文档或与指定过滤条件匹配的所有文档;如果第二个参数传入`{justOne: true}`,只删除符合查询条件的第一条文档;如果查询条件传入空对象`{}`会删除当前集合的所有文档
 ```js
 // 先插入一条测试数据
 db.test.insert({_id:'hello',name:'删除测试',age: 10,job:'测试'})
@@ -137,4 +138,31 @@ db.test.find()
 // { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
 // { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员", "age" : 30, "name" : "沈腾", "skill" : "跳舞" }
 // { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "skill" : "跳舞" }
+
+// 清空集合(性能比较差，会一个一个删除)
+db.test.remove({}); // db.test.find()/db.test.find({})，remove必须传参 
+// 可以直接执行删除集合命令，性能较好
+db.test.drop()
+```
+
+* `db.<collection>.deleteOne`: 只删除符合查询条件的第一个文档
+* `db.<collection>.deleteMany`: 删除所有符合查询条件的文档
+* `db.<collection>.drop`: 删除当前集合
+* `db.dropDatabase`: 删除数据库
+
+一个简单的删除`demo`:
+```js
+// 插入4条测试数据
+db.test.insert([
+  {name:'测试数据1',isDel:0},
+  {name:'测试数据2',isDel:1},
+  {name:'测试数据3',isDel:0},  
+  {name:'测试数据4',isDel:0}
+])
+// 通过修改isDel字段将数据置为删除状态 
+db.test.update({name:'测试数据1'},{$set:{isDel:1}})
+// 只查询没有被删除的内容 
+db.test.find({isDel:0})
+// { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f30"), "name" : "测试数据3", "isDel" : 0 }
+// { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f31"), "name" : "测试数据4", "isDel" : 0 }
 ```

@@ -51,6 +51,43 @@ db.users.find({status: 'A'})
 `db.<collection>.findOne()`: 用来查询集合中符合条件的第一个文档
 
 `db.<coolcation>.find().count()`: 查询集合中符合条件的文档的数量
+
+### 修改文档
+修改文档接收参数：  
+1. 过滤条件
+2. 要替换为的新文档（完全替换匹配文档，除了_id字符）
+3. 选项文档 [可选]
+
+修改操作符：
+1. `$set`:用来修改文档中的指定属性
+
+在`demo`集合中插入如下文档:
+```
+{ "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "前端工程师" }
+{ "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+{ "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "name" : "沈腾", "age" : "30", "job" : "演员" }
+{ "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "job" : "演员" }
+```
+
+`db.<collection>.update()`: 将匹配到的第一个文档全部替换为指定文档
+```js
+// 这样会进行全部替换，操作风险比较大
+db.test.update({job:'演员'},{job:'高级演员'})
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "前端工程师" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "job" : "演员" }
+
+// 使用修改操作符进行指定字段更新
+db.test.update({name:'wk'},{$set:{job:'资深前端开发'}})
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "资深前端开发" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "job" : "演员" }
+```
+
 ### 使用可视化工具
 这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 

@@ -8,3 +8,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+.nav {
+  margin-top: 10px;
+}
+.js-create {
+  margin-top: 20px;
+}

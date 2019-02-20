@@ -4,7 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 3000;
+// process.cwd(): 返回Nodejs进程的当前工作目录
+// 在执行fs.readFile操作时，第一个参数是相对于process.cwd()的路径
 const getPath = dir => path.resolve(__dirname, dir);
+/**
+ * 通过后缀获取请求头
+ * @param suffix：请求路径后缀
+ * @returns {*}
+ */
 const getHeader = suffix => {
   const map = {
     '.css': 'text/css',
@@ -18,7 +25,9 @@ const getHeader = suffix => {
 
 http.createServer((req, res) => {
   const { pathname } = url.parse(req.url);
+  console.log('pathname', pathname);
   let sourcePath = pathname;
+  // 将请求路径和资源进行映射
   const routeConfig = {
     '/': '/index.html',
     '/about': '/about.html',
@@ -29,6 +38,7 @@ http.createServer((req, res) => {
   }
   fs.readFile(getPath(`template${sourcePath}`), (err, data) => {
     if (err) {
+      console.log('err', err);
       res.writeHead(404, 'NOT FOUND', {
         'Content-Type': 'text/html;charset=utf-8'
       });

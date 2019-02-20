@@ -639,6 +639,81 @@ readdir.then(
 ### `path`路径操作
 
 ### 创建`Web`服务器
+这里，我们要通过http模块，url模块，path模块，fs模块来创建一个Web服务器
+
+什么是web服务器？  
+`Web`服务器一般指网站服务器，是指驻留于因特网上某种类型计算机的程序，可以向浏览器等`Web`客户端提供文档，也可以放置网站问文件，让全世界浏览；可以放置数据文件，让全世界下载。目前最主流的三个`Web`服务器是`Apache,Nginx,IIS`  
+想要深入了解的话可以阅读`MDN`：[传送门](https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/What_is_a_web_server)
+
+当浏览器需要一个托管在网络服务器上的文件的时候，浏览器通过HTTP请求这个文件。当这个请求到达正确的网络服务器(硬件)时，HTTP服务器(软件)收到这个请求，找到这个被请求的文档(如果这个文档不存在，那么将返回一个404响应)，并把这个文档通过HTTP发送给浏览器。
+![](./shotscreen/06webServer_flow.png)
+
+> 当前目录：06 webServer
+
+接下来，我们用代码来演示这个流程：
+```js
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = 3000;
+// process.cwd(): 返回Nodejs进程的当前工作目录
+// 在执行fs.readFile操作时，第一个参数是相对于process.cwd()的路径
+const getPath = dir => path.resolve(__dirname, dir);
+/**
+ * 通过后缀获取请求头
+ * @param suffix：请求路径后缀
+ * @returns {*}
+ */
+const getHeader = suffix => {
+  const map = {
+    '.css': 'text/css',
+    '.html': 'text/html',
+    '.js': 'application/js',
+    '.jpg': 'image/jpeg',
+    '.png': 'image/png'
+  };
+  return map[suffix];
+};
+
+http.createServer((req, res) => {
+  const { pathname } = url.parse(req.url);
+  console.log('pathname', pathname);
+  let sourcePath = pathname;
+  // 将请求路径和资源进行映射
+  const routeConfig = {
+    '/': '/index.html',
+    '/about': '/about.html',
+    '/list': '/list.html'
+  };
+  if (Object.keys(routeConfig).includes(pathname)) {
+    sourcePath = routeConfig[pathname];
+  }
+  fs.readFile(getPath(`template${sourcePath}`), (err, data) => {
+    if (err) {
+      console.log('err', err);
+      res.writeHead(404, 'NOT FOUND', {
+        'Content-Type': 'text/html;charset=utf-8'
+      });
+      res.write(`<h2>Not Found</h2>`);
+      res.end();
+      return;
+    }
+    // 这里要根据请求资源的不同，来进行不同响应头的处理
+    const suffix = path.extname(sourcePath), header = getHeader(suffix);
+    // css,img,js
+    res.writeHead(200, 'resolve OK', {
+      'Content-Type': `${header};charset=utf-8`
+    });
+    res.write(data);
+    res.end();
+  });
+}).listen(PORT, err => {
+  if (err) throw err;
+  console.log(`server is listening on port ${PORT}`);
+});
+```
 
 ### 非阻塞I/O,事件驱动
 

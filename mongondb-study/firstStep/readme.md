@@ -60,6 +60,7 @@ db.users.find({status: 'A'})
 
 修改操作符：
 1. `$set`:用来修改文档中的指定属性
+2. `$unset`: 删除文档的指定属性
 
 在`demo`集合中插入如下文档:
 ```
@@ -86,6 +87,14 @@ db.test.find()
 // { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
 // { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员" }
 // { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "job" : "演员" }
+
+// 使用修改操作符进行指定字段删除
+db.test.update({name:'贾玲'},{$unset:{job:''}})
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "资深前端开发" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30 }
 ```
 
 ### 使用可视化工具

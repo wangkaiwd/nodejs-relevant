@@ -40,7 +40,17 @@ db.test.insert({name:'wk3',age:21,job:'job1'})
 ```js
 db.test.insert({name:'wk4',age: 22,job:'job2'})
 ```
+### 查询文档
+`db.<collection>.find()`: 查询集合中的所有文档
 
+`db.<collection>.find({<filed1>:<value1>,...})`: 查询包含字段<filed>并且等于特定<value>的所有文档
+```js
+// 从user集合中检索status字段值为"A"的所有文档
+db.users.find({status: 'A'})
+```
+`db.<collection>.findOne()`: 用来查询集合中符合条件的第一个文档
+
+`db.<coolcation>.find().count()`: 查询集合中符合条件的文档的数量
 ### 使用可视化工具
 这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 

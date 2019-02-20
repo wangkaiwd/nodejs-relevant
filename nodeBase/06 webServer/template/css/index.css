@@ -1,0 +1,10 @@
+body {
+  background-color: pink;
+}
+.index {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

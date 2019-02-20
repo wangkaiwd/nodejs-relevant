@@ -70,7 +70,7 @@ db.users.find({status: 'A'})
 { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "job" : "演员" }
 ```
 
-`db.<collection>.update()`: 将匹配到的第一个文档全部替换为指定文档
+`db.<collection>.update()`: 将匹配到的第一个文档全部替换为指定文档(updateOne),如果第三个参数传`{multi:true}`则将匹配到的所有文档替换为指定文档(updateMany)
 ```js
 // 这样会进行全部替换，操作风险比较大
 db.test.update({job:'演员'},{job:'高级演员'})
@@ -97,6 +97,18 @@ db.test.find()
 // { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30 }
 ```
 
+`db.<collection>.updateMany`: 更新所有通过过滤条件匹配到的文档
+```js
+db.test.update({job:'高级演员'},{$set:{age:30,name:'沈腾'}})
+db.test.updateMany({age:30},{$set:{skill:'跳舞'}})
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "资深前端开发" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员", "age" : 30, "name" : "沈腾", "skill" : "跳舞" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "skill" : "跳舞" }
+```
+
+`db.<collection>.updateOne`: 更新一个符合条件的文档
 ### 使用可视化工具
 这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 

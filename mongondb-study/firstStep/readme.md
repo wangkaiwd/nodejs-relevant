@@ -18,7 +18,14 @@
 ## [数据库`CRUD`操作](http://www.mongoing.com/docs/crud.html)
 [`CRUD`](https://developer.mozilla.org/zh-CN/docs/Glossary/CRUD):（创建：Create,读取：Read,更新: Update,删除：Delete）是对于存储的信息可以进行操作的同义词。是一个对四种操作持久化信息的基本操作的助记符。
 
-首先我们新建一个`demo`数据库，在`demo`数据库下进行增删改查的演示
+### 使用可视化工具
+这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
+
+这里介绍一下简单的使用方法：
+![tools01](../screenshots/mongoTools01.png)
+![tools01](../screenshots/mongoTools02.png)
+
+接下来我们新建一个`demo`数据库，在`demo`数据库下进行增删改查的演示
 ```
 use demo
 ```
@@ -109,9 +116,25 @@ db.test.find()
 ```
 
 `db.<collection>.updateOne`: 更新一个符合条件的文档
-### 使用可视化工具
-这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 
-这里介绍一下简单的使用方法：
-![tools01](../screenshots/mongoTools01.png)
-![tools01](../screenshots/mongoTools02.png)
+### 删除文档
+
+* `db.<collection>.remove`: 删除单个文档或与指定过滤条件匹配的所有文档
+```js
+// 先插入一条测试数据
+db.test.insert({_id:'hello',name:'删除测试',age: 10,job:'测试'})
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "资深前端开发" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员", "age" : 30, "name" : "沈腾", "skill" : "跳舞" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "skill" : "跳舞" }
+// { "_id" : "hello", "name" : "删除测试", "age" : 10, "job" : "测试" }
+
+db.test.remove({_id:'hello'})
+// 可以发现新添加的内容已经被删除了
+db.test.find()
+// { "_id" : ObjectId("5c692c2d664fe95effd4a499"), "name" : "wk", "age" : 18, "job" : "资深前端开发" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2b"), "name" : "花花", "age" : 28, "job" : "音乐家" }
+// { "_id" : ObjectId("5c6d473c2bc155f6ed7c4f2c"), "job" : "高级演员", "age" : 30, "name" : "沈腾", "skill" : "跳舞" }
+// { "_id" : ObjectId("5c6d477e2bc155f6ed7c4f2d"), "name" : "贾玲", "age" : 30, "skill" : "跳舞" }
+```

@@ -525,10 +525,34 @@ fs.readdir('../04 fs', (err, files) => {
   //   'mkdirTest',
   //   'readFileTest.txt',
   //   'statTest.txt' ]
-
 });
 ```
 
+最后，我们学习`fs.rename`:
+> 当前目录：[04 fs/demo6.js](./04%20fs/demo6.js)
+```js
+const fs = require('fs');
+/**
+ * oldPath: 原来文件的路径
+ * newPath: 要改为的文件路径
+ * callback: 处理异常信息
+ */
+fs.rename('./renameText.txt', './renameText1.txt', (err) => {
+  if (err) {
+    console.log(`重命名失败 ${err.message}`);
+    return;
+  }
+  console.log('重命名成功');
+});
+
+// 如果oldPath和newPath不在同一级目录下的话，相当于剪切效果
+```
+到这里，我们已经把列出来的`api`学习完毕了
+
+#### `fs`案例
+通过前面的学习，这里我们要通过`fs`做一些小事情：
+1. 判断服务器上有没有upload目录，没有就创建这个目录
+2. 找出html目录下面的所有目录，然后打印出来
 ### `path`路径操作
 
 ### 创建`Web`服务器

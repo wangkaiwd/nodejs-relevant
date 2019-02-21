@@ -14,7 +14,7 @@
 //14.向tangseng中添加一个新的电影Interstellar
 //15.删除喜欢beijing的用户
 //16.删除user集合
-
+//17.向numbers中插入20000条数据
 //18.查询numbers中num为500的文档
 //19.查询numbers中num大于5000的文档
 //20.查询numbers中num小于30的文档

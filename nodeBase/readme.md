@@ -713,8 +713,6 @@ http.createServer((req, res) => {
   console.log(`server is listening on port ${PORT}`);
 });
 ```
-展示效果:
-![pageShow](./shotscreen/06%20webServer_show.gif)
 ### 非阻塞I/O,事件驱动
 
 ### 模拟`get`与`post`请求

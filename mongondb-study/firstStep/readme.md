@@ -166,3 +166,8 @@ db.test.find({isDel:0})
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f30"), "name" : "测试数据3", "isDel" : 0 }
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f31"), "name" : "测试数据4", "isDel" : 0 }
 ```
+
+## 文档之间的关系
+* 一对一：夫妻
+* 一对多/多对一：用户-订单，文章-评论
+* 多对多：学生-老师

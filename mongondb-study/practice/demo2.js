@@ -22,6 +22,8 @@
  *
  *  db.numbers.find().skip((pageIndex-1)*pageSize).limit(pageSize)
  *  totalPage: db.numbers.find().count()
+ *
+ *  实际工作中很少使用不带条件的查询
  */
 //23.查看numbers集合中的前10条数据
 // db.numbers.find().limit(10)

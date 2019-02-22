@@ -16,7 +16,7 @@
 //16.删除user集合
 //17.向numbers中插入20000条数据
 //18.查询numbers中num为500的文档
-//19.查询numbers中num大于5000的文档
+//19.查询numbers中num大于50的文档
 //20.查询numbers中num小于30的文档
 //21.查询numbers中num大于40小于50的文档
 //22.查询numbers中num大于19996的文档

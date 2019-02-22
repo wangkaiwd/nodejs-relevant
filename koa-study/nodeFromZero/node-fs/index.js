@@ -1,1 +1,0 @@
-console.log('hello 我要存入数据');

@@ -723,6 +723,91 @@ http.createServer((req, res) => {
 1. `Node`的非阻塞`I/O`是什么
 2. `Node events`模块是什么
 
+在我们正常编程中，我们是希望程序能够按照我们的编写意愿来一行一行执行：
+```js
+console.log(1);
+console.log(2);
+console.log(3);
+/**
+ * output:
+ *  1
+ *  2
+ *  3
+ */
+```
+可是大多数时候，我们会用到一些异步方法:
+```js
+const fs = require('fs');
+
+console.log(1);
+getTest = () => {
+  fs.readFile('./test.json', (err, data) => {
+    console.log(2);
+  });
+};
+getTest();
+console.log(3);
+/**
+ * output:
+ *  1
+ *  3
+ *  2
+ */
+```
+上面代码中，由于`fs.readFile`是`Node`的异步函数，会在文件读取完毕之后才会执行。所以程序会先执行1,3，最后执行`fs.readFile`的2部分。并不会因为读取文件的逻辑而影响到之后代码的执行。
+
+但是这种也会引发一个问题：在步骤3的位置无法获取步骤2中执行结果！这就是`Node`的非阻塞I/O
+
+那么我们怎么解决这个问题呢?
+1. 通过回调函数
+2. 通过`Node`的`events`模块
+
+首先，我们通过回调函数来解决这个问题:  
+```js
+const fs = require('fs');
+
+const getTest = (callback) => {
+  fs.readFile('./test.json', (err, data) => {
+    callback(data);
+  });
+};
+
+getTest(result => {
+  console.log(JSON.parse(result));
+  // { name: 'test', language: 'nodejs' }
+})
+```
+通过回调函数，可以将`getExt`的数据获取到
+
+接下来，我们通过`Node`的`events`模块来解决这个异步问题：
+```js
+// Emitter:触发器  EventEmitter:事件触发器
+const EventEmitter = require('events');
+const fs = require('fs');
+/**
+ * Nodejs事件循环：
+ *  1. Node是单进程单线程应用程序，但是通过事件和回调支持并发，所以性能非常高
+ *  2. Node的每一个API都是异步的，并作为一个独立线程运行，使用异步函数调用，并处理并发
+ *  3. Node有多个内置的事件，我们可以通过引入events模块，并通过实例化EventEmitter类来绑定和监听事件
+ */
+
+const myEmitter = new EventEmitter();
+const getTest = () => {
+  fs.readFile('./test.json', (err, data) => {
+    // 触发事件
+    myEmitter.emit('data', data);
+  });
+};
+
+// 注册监听器
+myEmitter.on('data', (data) => {
+  console.log(JSON.parse(data));
+});
+getTest();
+```
+上边的代码创建一个`EventEmitter`实例，绑定了一个监听器。`EventEmitter.on()`用于注册监听器，`EventEmitter.emit()`用于触发事件
+  
+到这里我们就简单了解了非阻塞`I/O`和事件驱动  
 
 ### 模拟`get`与`post`请求
 

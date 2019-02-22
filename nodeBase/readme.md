@@ -637,6 +637,51 @@ readdir.then(
 ```
 完整代码: [demo](./04%20fs/demo7.js)
 ### `path`路径操作
+> `path`模块提供用于处理文件路径和目录路径的使用工具
+
+这里把`path`的常用接口按照用途来进行一个简单归类，方便学习理解
+#### 获取路径/文件名/扩展名
+* `path.dirname(filepath)`: 获取路径
+* `path.basename(filepath)`: 获取文件名
+* `path.extname(filepaht)`: 获取扩展名
+
+##### 获取所在路径
+例子如下：
+```js
+const path = require('path');
+const filepath = '/tmp/demo/js/test.js';
+// 返回filepath所在的目录名
+console.log(path.dirname(filepath)); // /tep/demo/js
+```
+##### 获取文件名
+严格来讲，`path.basename`只是输出路径的最后一部分，并不会判断是否是文件名。但是大部分情况我们都可以用它来作为简易的"获取文件名"的方法
+```js
+const path = require('path');
+// output: test.js
+console.log(path.basename('tmp/demo/js/test.js'));
+
+// output: test
+console.log(path.basename('tmp/demo/js/test'));
+```
+有些时候，我们可能不需要文件的扩展名，这里我们可以传入第二个参数：
+```js
+// output: test
+path.basename('tmp/demo/js/test.js', '.js');
+```
+##### 获取扩展名
+例子如下：
+```js
+
+```
+#### 路径拼接
+* `path.join([...path])`:
+在`Nodejs`中，路径都是相对于`process.cwd()`(`Nodejs`进程的当前工作目录)来进行操作的，大多数情况我们都会进行路径的拼接来方便路径的书写：
+```js
+
+```
+#### 文件路径分解/组合
+ 
+
 
 ### 创建`Web`服务器
 这里，我们要通过http模块，url模块，path模块，fs模块来创建一个Web服务器
@@ -714,6 +759,102 @@ http.createServer((req, res) => {
 });
 ```
 ### 非阻塞I/O,事件驱动
+`Java`，`PHP` 或者 `.NET`等服务端语言，会为每一个客户端的连接创建一个新的线程。  
+`Node`不会为每一个客户连接创建一个新的线程，而仅仅用一个线程。  
+当有用户连接了，就会触发一个内部事件，通过非阻塞I/O、事件驱动机制，让`Node`程序宏观上也是并行的。  
+使用`Node`,一个8GB内存的服务器，可以同时处理超过4万用户的连接。
+
+在这一章节中，主要解决:
+1. `Node`的非阻塞`I/O`是什么
+2. `Node events`模块是什么
+
+在我们正常编程中，我们是希望程序能够按照我们的编写意愿来一行一行执行：
+```js
+console.log(1);
+console.log(2);
+console.log(3);
+/**
+ * output:
+ *  1
+ *  2
+ *  3
+ */
+```
+可是大多数时候，我们会用到一些异步方法:
+```js
+const fs = require('fs');
+
+console.log(1);
+getTest = () => {
+  fs.readFile('./test.json', (err, data) => {
+    console.log(2);
+  });
+};
+getTest();
+console.log(3);
+/**
+ * output:
+ *  1
+ *  3
+ *  2
+ */
+```
+上面代码中，由于`fs.readFile`是`Node`的异步函数，会在文件读取完毕之后才会执行。所以程序会先执行1,3，最后执行`fs.readFile`的2部分。并不会因为读取文件的逻辑而影响到之后代码的执行。
+
+但是这种也会引发一个问题：在步骤3的位置无法获取步骤2中执行结果！这就是`Node`的非阻塞I/O
+
+那么我们怎么解决这个问题呢?
+1. 通过回调函数
+2. 通过`Node`的`events`模块
+
+> 当前目录：[07 no-blocking IO event driven](./07%20no-blocking%20IO%20event%20driven)
+
+首先，我们通过回调函数来解决这个问题:  
+```js
+const fs = require('fs');
+
+const getTest = (callback) => {
+  fs.readFile('./test.json', (err, data) => {
+    callback(data);
+  });
+};
+
+getTest(result => {
+  console.log(JSON.parse(result));
+  // { name: 'test', language: 'nodejs' }
+})
+```
+通过回调函数，可以将`getExt`的数据获取到
+
+接下来，我们通过`Node`的`events`模块来解决这个异步问题：
+```js
+// Emitter:触发器  EventEmitter:事件触发器
+const EventEmitter = require('events');
+const fs = require('fs');
+/**
+ * Nodejs事件循环：
+ *  1. Node是单进程单线程应用程序，但是通过事件和回调支持并发，所以性能非常高
+ *  2. Node的每一个API都是异步的，并作为一个独立线程运行，使用异步函数调用，并处理并发
+ *  3. Node有多个内置的事件，我们可以通过引入events模块，并通过实例化EventEmitter类来绑定和监听事件
+ */
+
+const myEmitter = new EventEmitter();
+const getTest = () => {
+  fs.readFile('./test.json', (err, data) => {
+    // 触发事件
+    myEmitter.emit('data', data);
+  });
+};
+
+// 注册监听器
+myEmitter.on('data', (data) => {
+  console.log(JSON.parse(data));
+});
+getTest();
+```
+上边的代码创建一个`EventEmitter`实例，绑定了一个监听器。`EventEmitter.on()`用于注册监听器，`EventEmitter.emit()`用于触发事件
+  
+到这里我们就简单了解了非阻塞`I/O`和事件驱动
 
 ### 模拟`get`与`post`请求
 

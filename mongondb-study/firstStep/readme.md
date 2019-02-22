@@ -166,7 +166,23 @@ db.test.find({isDel:0})
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f30"), "name" : "测试数据3", "isDel" : 0 }
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f31"), "name" : "测试数据4", "isDel" : 0 }
 ```
+### 常用的查询操作符
 
+#### 查询操作符
+> 文档地址: https://docs.mongodb.com/manual/reference/operator/query/
+* `$eq`: 查询等于指定值的文档
+* `$gt`: 查询大于指定值的文档
+* `$gte`: 查询大于等于指定值的文档
+* `$in`: 查询指定数组中包含的文档
+* `$lt`: 查询小于指定值的文档
+* `$lte`: 查询小于等于指定值的文档
+* `$ne`: 查询不等于指定值的文档
+* `$nin`: 查询指定数组中没有包含的文档
+#### 修改操作符
+> 文档地址: https://docs.mongodb.com/manual/reference/operator/update/
+* `$set`: 指定属性修改
+* `$unset`: 指定属性删除
+* `$push`: 追加指定属性到一个数组文档
 ## 文档之间的关系
 * 一对一：夫妻
 * 一对多/多对一：用户-订单，文章-评论

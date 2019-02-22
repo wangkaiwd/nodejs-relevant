@@ -762,6 +762,8 @@ console.log(3);
 1. 通过回调函数
 2. 通过`Node`的`events`模块
 
+> 当前目录：[07 no-blocking IO event driven](./07%20no-blocking%20IO%20event%20driven)
+
 首先，我们通过回调函数来解决这个问题:  
 ```js
 const fs = require('fs');
@@ -807,7 +809,7 @@ getTest();
 ```
 上边的代码创建一个`EventEmitter`实例，绑定了一个监听器。`EventEmitter.on()`用于注册监听器，`EventEmitter.emit()`用于触发事件
   
-到这里我们就简单了解了非阻塞`I/O`和事件驱动  
+到这里我们就简单了解了非阻塞`I/O`和事件驱动
 
 ### 模拟`get`与`post`请求
 

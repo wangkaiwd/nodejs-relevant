@@ -72,3 +72,19 @@ Hero.find({name: '狄仁杰'}, 'name skill -_id', (err, docs) => {
     console.log(docs);
   }
 });
+
+// 修改
+// 将狄仁杰的技能数量改为4
+Hero.update({name: '狄仁杰'}, {$set: {skillCount: 4}}, (err, raw) => {
+  if (!err) {
+    // 修改成功
+    console.log('update success');
+    console.log(raw);
+  }
+});
+
+// 删除
+// 删除狄仁杰
+Hero.remove({name: '狄仁杰'}, err => {
+  if (!err) {console.log('删除成功');}
+});

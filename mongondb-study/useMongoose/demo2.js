@@ -1,14 +1,15 @@
 /**
  * mongoose里的三个重要概念：
- *  Schema
- *  Model
- *  Document
+ *  Schema -- 定义collection中字段的规则
+ *  Model -- 通过Schema来创建集合
+ *  Document -- Model的实例即为document
  */
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const Schema = mongoose.Schema;
 // Mongoose会在创建每个文档时会自动设定versionKey,默认是__v。
 // versionKey是一个字符串，代表版本号的属性名，我们也可以进行手动设置
+// 构建Schema
 const StudentSchema = new Schema(
   {
     name: String,
@@ -36,7 +37,7 @@ db.once('error', () => {
   console.log('database connect error');
 });
 
-// 构建Schema
+// Mongoose会自动找到名称是model名字复数形式的collection,所以这里创建的集合是Students
 const Student = mongoose.model('Student', StudentSchema);
 const student1 = new Student({
   name: '小红',

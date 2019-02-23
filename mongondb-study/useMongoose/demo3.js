@@ -52,8 +52,23 @@ const hero2 = new Hero({
 
 // 1. Model.create:在数据库中保存一个或多个文档
 // 在数据库中插入定义好的文档
-Hero.create([hero1, hero2], (err, array) => {
-  if (err) {return console.log(`create failed: ${err.message}`);}
-  console.log('save database success');
-  console.log('data', array);
+// Hero.create([hero1, hero2], (err, array) => {
+//   if (err) {return console.log(`create failed: ${err.message}`);}
+//   console.log('save database success');
+//   console.log('data', array);
+// });
+
+/**
+ * Model.find: 查询文档
+ *  conditions: 查询条件
+ *  [projection]: 投影（需要展示的字段）;
+ *                投影也可以传入字符串，将字段用空格隔开，字段前添加+:包含该字段，字段前添加-:排除该字段，默认包含字段
+ *  [options]: skip,limit等方法
+ *  [callback]: 回调函数，用来获取查询信息和错误信息
+ */
+Hero.find({name: '狄仁杰'}, 'name skill -_id', (err, docs) => {
+  if (!err) {
+    console.log('查询成功');
+    console.log(docs);
+  }
 });

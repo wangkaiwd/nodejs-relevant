@@ -671,14 +671,54 @@ path.basename('tmp/demo/js/test.js', '.js');
 ##### 获取扩展名
 例子如下：
 ```js
+// .html
+console.log(path.extname('index.html'));
 
+// output: .md
+console.log(path.extname('index.coffee.md'));
+
+// output: ''
+console.log(path.extname('index'));
 ```
+
+比较详细的解析规则(假设:`path.basename(filepath)===B`):
+* 从`B`的最后一个`.`开始截取，直到最后一个字符
+* 如果`B`中不存在`.`,或者`B`的第一个字符就是`.`,那么返回空字符串 
+
 #### 路径拼接
-* `path.join([...path])`:
-在`Nodejs`中，路径都是相对于`process.cwd()`(`Nodejs`进程的当前工作目录)来进行操作的，大多数情况我们都会进行路径的拼接来方便路径的书写：
-```js
+在`Nodejs`中，路径都是相对于`process.cwd()`(`Nodejs`进程的当前工作目录)来进行操作的，大多数情况我们都会进行路径的拼接来方便路径的书写
+* `path.join([...path])`: 用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，`Unix`系统是`"/"`,`Windows`系统是`"\"`
+* `path.resolve([...path])`: 将路径或路径片段的序列解析为绝对路径
 
+##### 连接路径
+```js
+const path = require('path');
+
+// output： '/foo/bar/baz'
+console.log(path.join('/foo', 'bar', 'baz/asdf', '..'));
 ```
+##### 解析为绝对路径
+这个`API`简单理解就是在`shell`命令下，从左到右运行一遍`cd path`命令，最终获取的绝对路径/文件名，就是这个接口所返回的结果
+```js
+const path = require('path');
+
+// output: /foo/bar/baz
+console.log(path.resolve('/foo/bar', './baz'));
+
+// cd /foo/bar
+// cd ./baz
+```
+
+下面是一些例子的对比:
+```js
+// output: /tmp/file
+console.log(path.resolve('/foo/bar', '/tmp/file/'));
+
+// 如果当前工作目录是/home/myself/node
+// output: /home/myself/node/wwwroot/static_files/gif/image.gif
+console.log(path.resolve('wwwroot', 'static_files/png/', '..gif/image.gif'));
+```
+
 #### 文件路径分解/组合
  
 

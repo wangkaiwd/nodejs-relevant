@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/:name', (req, res) => {
-  res.send(`hello, ${req.params.name}`);
-});
+// router.get('/', (req, res) => {
+//   res.render('user', { name: 'express + pug' });
+// });
 
+router.get('/:name', (req, res) => {
+  res.render('user', { name: req.params.name });
+});
 module.exports = router;

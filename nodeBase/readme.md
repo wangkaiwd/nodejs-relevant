@@ -720,8 +720,54 @@ console.log(path.resolve('wwwroot', 'static_files/png/', '..gif/image.gif'));
 ```
 
 #### 文件路径分解/组合
- 
+* `path.format(pathObject)`: 从路径返回对象字符串。与`path.parse`相反
+* `path.parse(filepath)`: 返回一个对象，表示`filepath`的各种信息
 
+##### `path.parse`
+会将路径解析为一个包含路径信息的对象，使用起来会比较方便:
+```js
+const path = require('path');
+
+console.log(path.parse('/home/user/dir/file.txt'));
+// {
+//   root: '/',             // 获取文件的根路径
+//   dir: '/home/user/dir', // path.dirname  获取文件所在目录
+//   base: 'file.txt',      // path.basename 获取文件名（更准确的来讲：输出路径的一部分）
+//   ext: '.txt',           // path.extname  获取文件扩展名
+//   name: 'file'           // path.basename(path,[,ext])  通过传入第二个参数来获取文件名（不包含扩展名）
+// }
+```
+##### `path.format`
+可以将一个包含路径信息的对象转换为路径字符串，是`path.parse`的逆向操作。  
+传入参数有一些参数是会被覆盖的，优先级如下：
+* `dir` vs `root`: 如果提供了`pathObject.dir`,则忽略`pathObject.root`
+* `base` vs `ext name`: 如果`pathObject.base`存在，则忽略`pathObject.ext`和`pathObject.name`
+```js
+const path = require('path');
+// root会被忽略
+console.log(path.format({
+  root: '/ignored',
+  dir: '/home/user/dir',
+  base: 'file.txt'
+}));
+// /home/user/dir/file.txt
+
+// ext会被忽略
+console.log(path.format({
+  root: '/',
+  base: 'file.txt',
+  ext: 'ignored'
+}));
+// file.txt
+
+// 未指定base,则使用name + ext
+console.log(path.format({
+  root: '/',
+  name: 'file',
+  ext: '.txt'
+}));
+// /file.txt
+```
 
 ### 创建`Web`服务器
 这里，我们要通过http模块，url模块，path模块，fs模块来创建一个Web服务器

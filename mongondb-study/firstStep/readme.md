@@ -1,24 +1,25 @@
-## 常用数据库了解
+## `MongoDB`基础知识整理
+### 常用数据库了解
 
-## 认识和安装`MongoDB`
-## `Mongo`基本命令
-### `MongoDB`的一些基本概念
+### 认识和安装`MongoDB`
+### `Mongo`基本命令
+#### `MongoDB`的一些基本概念
 * 数据库: `database`
 * 集合: `collection`
 * 文档：`document`
 
 **在`mongoDB`中，数据库和集合都不需要手动创建。当我们创建文档时，如果文档所在的集合或数据库不存在会自动创建数据库和集合**
 
-### 常用操作
+#### 常用操作
 * `show dbs/database`: 显示当前的所有数据库
 * `use 数据库名称`: 进入到指定的数据库中
 * `db`: 显示当前所处的数据库
 * `show collection`:显示数据库中所有的集合
 
-## [数据库`CRUD`操作](http://www.mongoing.com/docs/crud.html)
+### [数据库`CRUD`操作](http://www.mongoing.com/docs/crud.html)
 [`CRUD`](https://developer.mozilla.org/zh-CN/docs/Glossary/CRUD):（创建：Create,读取：Read,更新: Update,删除：Delete）是对于存储的信息可以进行操作的同义词。是一个对四种操作持久化信息的基本操作的助记符。
 
-### 使用可视化工具
+#### 使用可视化工具
 这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
 
 这里介绍一下简单的使用方法：
@@ -29,7 +30,7 @@
 ```
 use demo
 ```
-### 插入文档
+#### 插入文档
 `db.<collection>.insert()`:向集合插入一个或多个文档
 ```js
 db.test.insert({name:'wk',age:18,job:'前端工程师'})
@@ -47,7 +48,7 @@ db.test.insert({name:'wk3',age:21,job:'job1'})
 ```js
 db.test.insert({name:'wk4',age: 22,job:'job2'})
 ```
-### 查询文档
+#### 查询文档
 `db.<collection>.find()`: 查询集合中的所有文档
 
 `db.<collection>.find({<filed1>:<value1>,...})`: 查询包含字段<filed>并且等于特定<value>的所有文档
@@ -59,7 +60,7 @@ db.users.find({status: 'A'})
 
 `db.<coolcation>.find().count()`: 查询集合中符合条件的文档的数量
 
-### 修改文档
+#### 修改文档
 修改文档接收参数：  
 1. 过滤条件
 2. 要替换为的新文档（完全替换匹配文档，除了_id字符）
@@ -117,7 +118,7 @@ db.test.find()
 
 `db.<collection>.updateOne`: 更新一个符合条件的文档
 
-### 删除文档
+#### 删除文档
 一般数据库中的数据都不会删除，所以删除对应的`api`会很少调用。一般会在数据中添加一个字段，来表示数据是否被删除。
 
 * `db.<collection>.remove`: 删除单个文档或与指定过滤条件匹配的所有文档;如果第二个参数传入`{justOne: true}`,只删除符合查询条件的第一条文档;如果查询条件传入空对象`{}`会删除当前集合的所有文档
@@ -166,9 +167,9 @@ db.test.find({isDel:0})
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f30"), "name" : "测试数据3", "isDel" : 0 }
 // { "_id" : ObjectId("5c6d647a2bc155f6ed7c4f31"), "name" : "测试数据4", "isDel" : 0 }
 ```
-### 常用的查询操作符
+#### 常用的查询操作符
 
-#### 查询操作符
+##### 查询操作符
 > 文档地址: https://docs.mongodb.com/manual/reference/operator/query/
 * `$eq`: 查询等于指定值的文档
 * `$gt`: 查询大于指定值的文档
@@ -178,18 +179,18 @@ db.test.find({isDel:0})
 * `$lte`: 查询小于等于指定值的文档
 * `$ne`: 查询不等于指定值的文档
 * `$nin`: 查询指定数组中没有包含的文档
-#### 修改操作符
+##### 修改操作符
 > 文档地址: https://docs.mongodb.com/manual/reference/operator/update/
 * `$set`: 指定属性修改
 * `$unset`: 指定属性删除
 * `$push`: 追加指定属性到一个数组文档
-## 文档之间的关系
+### 文档之间的关系
 * 一对一：夫妻
 * 一对多/多对一：用户-订单，文章-评论
 * 多对多：学生-老师
 
-### 排序
-#### `db.<collection>.find(query).sort`
+#### 排序
+##### `db.<collection>.find(query).sort`
 使查询内容根据指定字段进行排序，如果字段值指定为1则升序排列，如果字段值为-1则降序排列。
 
 示例如下：
@@ -203,7 +204,7 @@ db.emps.find().sort({sal:-1})
 db.emps.find().sort({sal:1,empno: -1})
 ```
 
-#### `projection`:投影
+##### `projection`:投影
 一般情况下，我们可能需要查询结果只显示我们想要的字段，这个时候可以为`db.<collection>.find`方法传入第二个参数
 ```js
 // 属性值为1：包含(include)该属性

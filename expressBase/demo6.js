@@ -15,19 +15,19 @@ const allowCorsDomain = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
 };
+// cors跨域
 app.use(allowCorsDomain);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 app.get('/ratings', (req, res) => {
-  // 请求头信息
-  console.log(req.headers);
-  console.log(req.query);
+  console.log('query', req.query);
   res.json(ratings);
 });
 
 app.post('/goods', (req, res) => {
-  console.log(req.headers);
-  console.log(req.body);
+  console.log('body', req.body);
   res.json(goods);
 });
 

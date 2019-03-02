@@ -944,5 +944,242 @@ getTest();
 到这里我们就简单了解了非阻塞`I/O`和事件驱动
 
 ### 模拟`get`与`post`请求
+这里我们结合`vue + element ui + axios`发送`ajax`请求来实现一个`todoList`案例，先看效果：  
 
-### `Node`连接`MongoDB`
+客户端代码如下：
+```vue
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.6/vue.min.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    .item {
+      font-size: 14px;
+      display: flex;
+    }
+
+    .box {
+      margin: 100px auto;
+      width: 480px;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .delete {
+      display: inline-block;
+      width: 60px;
+      margin-right: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <el-row class="box">
+    <el-col>
+      <h1>TodoList</h1>
+    </el-col>
+    <el-col>
+      <el-form @submit.native.prevent inline>
+        <el-form-item>
+          <el-input v-model="text" placeholder="请输入待办事项"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="onSubmit">添加</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+    <el-col>
+      <el-card>
+        <div v-for="item in todos" :key="item.id" class="item">
+          <span class="text">{{item.text}}</span>
+          <a class="delete" @click="onDelete(item.id)" href="javascript:;"><i class="el-icon-delete"></i></a>
+        </div>
+        <div v-if="todos.length === 0">
+          暂无数据
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
+</div>
+<script>
+  const baseUrl = 'http://localhost:3000/';
+  const vm = new Vue({
+    el: '#app',
+    data () {
+      return {
+        text: '',
+        todos: []
+      };
+    },
+    mounted () {
+      this.getList();
+    },
+    methods: {
+      getList () {
+        axios.get(`${baseUrl}api/todos/list`)
+          .then(
+            res => {
+              this.todos = res.data.todos;
+            }
+          );
+      },
+      onSubmit () {
+        axios.post(`${baseUrl}api/todos/add`, {
+          text: this.text
+        }).then(
+          res => {
+            this.text = '';
+            this.getList();
+          }
+        );
+      },
+      onDelete (id) {
+        axios.post(`${baseUrl}api/todos/delete`, { id }).then(
+          res => {
+            this.getList();
+          }
+        );
+      }
+    }
+  });
+</script>
+</body>
+</html>
+```
+在前端页面中，我们通过`element ui`进行样式布局，并使用`axios`与服务端进行交互，实现一个初步的`todoList`应用，完成前后端对接。
+
+服务端`nodejs`的代码是这样的：
+```js
+const http = require('http');
+const url = require('url');
+const PORT = 3000;
+const baseUrl = '/api/todos/';
+// 模拟数据库，建立一个初始值,在服务器重启的时候会消失
+const todos = [
+  { id: 1, text: '待办事项1', createTime: new Date().getTime() },
+  { id: 2, text: '待办事项1', createTime: new Date().getTime() },
+  { id: 3, text: '待办事项1', createTime: new Date().getTime() },
+  { id: 4, text: '待办事项1', createTime: new Date().getTime() }
+];
+
+// Promise封装post请求
+const postRequest = (req) => new Promise((resolve, reject) => {
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk;
+  });
+  req.on('end', () => {
+    resolve(JSON.parse(body));
+  });
+  req.on('error', (err) => {
+    reject(err);
+  });
+});
+// 回调函数封装post请求
+const postCb = (req, success, fail) => {
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk;
+  });
+  req.on('end', () => {
+    success(JSON.parse(body));
+  });
+  req.on('error', (err) => {
+    fail(err);
+  });
+};
+const allowCors = (res) => {
+  // 设置跨域的域名,*表示允许任意域名跨域
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // 跨域允许的请求方式
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+  // 设置header类型
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+};
+http.createServer((req, res) => {
+  allowCors(res); // 允许跨域
+  // 将用到的参数解构出来，由于没有涉及到get传参，所以query暂时没有用到
+  let { query, pathname } = url.parse(req.url, true);
+  const method = req.method.toLowerCase();
+  // res.writeHead和res.setHeader的区别：
+  //    1. res.writeHead设置的响应头会合res.setHeader设置的响应头合并
+  //    2. 如果响应头的key值相同，那么优先使用res.writeHead设置的响应头
+  res.writeHead(200, 'resolve OK', {
+    'Content-Type': 'application/json'
+  });
+  if (method === 'post') {
+    if (pathname === `${baseUrl}add`) {
+      postRequest(req).then(
+        body => {
+          const last = todos.slice(-1)[0];
+          const newId = last ? last.id + 1 : 1;
+          body.id = newId;
+          body.createTime = new Date().getTime();
+          todos.push(body);
+          res.write(JSON.stringify({ code: 0, msg: 'success' }));
+          res.end();
+        },
+        err => console.log(err)
+      );
+    }
+    if (pathname === `${baseUrl}delete`) {
+      postRequest(req).then(
+        body => {
+          const index = todos.findIndex(item => item.id === body.id);
+          todos.splice(index, 1);
+          res.write(JSON.stringify({ code: 0, msg: 'success' }));
+          res.end();
+        }
+      );
+    }
+  } else if (method === 'get') {
+    if (pathname === `${baseUrl}list`) {
+      res.write(JSON.stringify({ todos }));
+      res.end();
+    }
+  } else { // 处理options预检请求，直接响应结束
+    res.end();
+  }
+}).listen(PORT, (err) => {
+  if (err) throw err;
+  console.log(`server is listening on port ${PORT}`);
+});
+
+```
+代码的这题思路是这样的：
+1. 我们引入`http`模块创建服务。  
+2. 通过设置响应头来处理跨域问题。  
+3. 我们对请求方式进行了区分。  
+4. 我们有对请求地址进行了拦截，并处理一些逻辑。  
+5. 将最终结果返回给客户端
+
+在代码书写的过程中，由于`post`请求的处理比较繁琐而且是重复的，所以对其进行了封装，方便调用：
+```js
+// Promise封装post请求
+const postRequest = (req) => new Promise((resolve, reject) => {
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk;
+  });
+  req.on('end', () => {
+    resolve(JSON.parse(body));
+  });
+  req.on('error', (err) => {
+    reject(err);
+  });
+});
+```
+我们可以看到，即使是对请求做了一些封装处理，可是服务端代码还是嵌套着许多的`if else`,代码看上去较为混乱，组织结构也有待调整。  
+为了让我们能够优雅的通过`nodejs`进行服务端代码的书写，可以使用一些优秀的第三方框架，如`koa`,`express`等。而上面学习的基础知识，也能让我们在使用框架的时候做到知其然以及知其所以然。
+
+到这里，我们就可以挑选一个合适的框架进行学习了。

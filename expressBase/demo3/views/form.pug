@@ -4,5 +4,18 @@ html(lang='en')
     title multer
   body
     div.input-box
-      form(enctype='multipart/form-data')
-        input(type='text',placeholder='请输入内容')
+      // action: 处理这个form信息的程序所在的URL
+      // enctype: 当method属性为post时，enctype是将form内容提交给服务器的MIME类型
+      //          1. application/x-www-form-urlencoded:未指定属性时的默认值
+      //          2. multipart/form-data: 这个值用于一个type属性设置为file的input元素
+      //          3. text/plain(HTML5)
+      // method: 提交form的http请求方式
+      form(action='/profile', enctype='multipart/form-data', method='post')
+        // input type=file:
+        //        accept:如果你不希望用户上传任何类型的文件，你可以使用input的accept属性
+        //               accept属性接受一个逗号分隔的MIME类型字符串
+        //        name: 控件的名称，与表单数据一起提交
+        //        multiple: 这个属性指示用户能否输入多个值。
+        input(type='file', name='avatar', accept='image/png,image/jpeg', multiple)
+        input(type='submit', value='提交')
+        h3 #{uploadStatus}

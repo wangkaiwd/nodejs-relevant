@@ -20,7 +20,7 @@
 [`CRUD`](https://developer.mozilla.org/zh-CN/docs/Glossary/CRUD):（创建：Create,读取：Read,更新: Update,删除：Delete）是对于存储的信息可以进行操作的同义词。是一个对四种操作持久化信息的基本操作的助记符。
 
 #### 使用可视化工具
-这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到官网自行下载:https://www.mongodbmanager.com, 下载的时候选择`Freeware`免费版
+这里用到的是`NoSQL Mangaer for MongoDB`,大家可以到[官网](https://www.mongodbmanager.com)自行下载, 下载的时候选择`Freeware`免费版
 
 这里介绍一下简单的使用方法：
 ![tools01](../screenshots/mongoTools01.png)

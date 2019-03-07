@@ -27,10 +27,40 @@
 
 #### 安装`MongoDB`
 首先打开`MongoDB`官网：https://www.mongodb.com/,然后在导航`Products`里选择`MongoDB Server`选择合适的版本。这里由于笔者使用的是`Mac`电脑，所以介绍一下`Mac`电脑的安装过程。 
+![install](./screenshots/mongo_install_01.png)
+![install](./screenshots/mongo_install_02.png)
 
-下载完成后我们需要做2件事:  
+下载完成后我们需要做3件事:  
 1. 配置环境变量
 2. 创建数据库存储目录
+3. 为`MongoDB`数据库存储目录添加使用权限
+
+首先，我们来为`MongoDB`配置环境变量，这样我们不管在个目录下，都可以在命令行通过`mongod`启动数据库，而不用再输入复杂的配置参数。
+
+第一步，我们在终端输入：`export PATH=/usr/local/mongodv/bin:$PATH`。注意，这里要将`/usr/local/mongodv/bin`换成自己安装`MongoDB`目录下的`bin`目录。
+  
+第二步，在终端中输入：`sudo vi ~/.bash_profile`，之后在`vi`模式下将第一步配置好的路径复制粘贴并进行保存。
+
+最后一步，使用`source ~/.bash_profile`更新配置，使配置文件生效。可以通过`echo $PATH`来查看当前系统环境变量
+
+接下来我们要在磁盘根目录建立`/data/db`目录来存储数据库：`sudo mkdir -p /data/db`
+
+在添加环境变量后和建立存储目录后，在终端中输入`mongod`会出现如下提示:
+![read_only](screenshots/mongo_read_only.png)
+之后我们在终端中通过如下命令来赋予目录权限：
+```
+sudo chown -R $USER /data/db
+```
+执行完成后，我们继续执行`mongod`命令：
+![connec_successful](./screenshots/mongo_connec_successful.png)
+至此，我们的`MongoDB`从安装到连接已经完成了，我们可以新开一个终端并输入`mongo`，通过`mongo shell`进行一些简单命令的测试：
+![mongo_shell](./screenshots/mongo_shell_firstuse.png)
+
+
+> 推荐文章：  
+> 1. [Mac mongodb 安装 简书](https://www.jianshu.com/p/bb77f8be67f4)  
+> 2. [为数据库目录添加权限](https://stackoverflow.com/questions/42446931/mongodb-exception-in-initandlisten-20-attempted-to-create-a-lock-file-on-a-rea)
+
 
 ### `MongoDB`基本概念
 这里我们先介绍一些`MongoDB`中的基本概念：

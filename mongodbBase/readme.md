@@ -93,10 +93,12 @@ sudo chown -R $USER /data/db
 #### 可视化工具介绍
 通过命令行来操作一些简单的数据库命令比较方便，但是进行一些相对复杂的操作时，并没有一些方便的语法提示和数据展示。接下来，我们使用相关的可视化工具来加快开发效率。
 
-这里我们使用的是[`Studio 3T`](https://studio3t.com/download/),我们可以点击链接去下载，也可以自己去官网下载。  
+这里我们使用的是[`Robo 3T`](https://robomongo.org/download),我们可以点击链接去下载，也可以自己去官网下载。  
 下载完成后界面如下：
+![robo3t_interface](./screenshots/robo%203T_display.png)
 
 一些常用的操作介绍：
+![robo3t_tools](./screenshots/robo%203Ttools.png)
 
 这里我们建立一个`mongo_demos`的数据库，接下来的相关`CRUD`都会在这个数据库里进行:
 ```js

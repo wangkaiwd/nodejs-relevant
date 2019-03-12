@@ -1,6 +1,51 @@
 ## `express`学习记录
-
+这是我在学习`express`框架过程中对`express`基础知识学习过程的一个总结和梳理，方便自己之后的复习以及社区其它小伙的学习
 ### `hello world`
+从这里，我们正式开始`express`框架的学习。  
+首先在我们的工作目录建立`codeSource`来存放`demo`源码，然后在`codeSource`下生成`package.json`进行项目依赖管理
+```
+mkdir codeSource
+cd codeSource
+npm init -y
+mkdir 01hello world
+```
+现在的目录结构是这样的：  
+![directory](./screenshots/01hello-world-directory.png)
+
+这里我们写出我们入门必备的`hello world`:
+```js
+const express = require('express');
+const app = express();
+// 读取当前目录下环境变量port的值，满足正式环境中的node服务的端口启动需求
+const port = process.env.PORT || 3000;
+// 当请求路径为'/'时返回'hello world'
+app.get('/', (req, res) => {
+  res.send('Hello Express!')
+});
+// 监听端口
+app.listen(port, () => {
+  console.log(`app is listening on port ${port}`);
+});
+```
+安装项目需要用到的依赖并运行代码：
+```
+npm i express nodemon -S
+npx nodemon ./01hello world/demo01.js
+```
+浏览器输入`localhost:3000`：  
+
+这里简单介绍一下我们用到的依赖和工具：
+* [`express`](https://github.com/expressjs/express): 一款`nodejs`的`web`框架
+* [`nodemon`](https://github.com/remy/nodemon): 监测`nodejs`应用程序中的任何改变并且自动重启服务
+* [`npx`](https://github.com/zkat/npx): 帮你执行依赖包里的二进制文件
+可能有小伙伴没有接触过`npx`，这个工具会自动寻找`node_modules/.bin/`下的第三方依赖并进行运行，在我们不想全局安装某些依赖的时候节省了很多代码:  
+```
+// 查看webpack版本
+node_modules/.bin/webpack -v
+// 使用npx
+npx webpack -v
+```
+当然，这只是`npx`最基础的一个功能，要想了解更多用法可以参考阮一峰老师的文章: [`npx`使用教程](http://www.ruanyifeng.com/blog/2019/02/npx.html)
 
 ### `express`中间件介绍
 

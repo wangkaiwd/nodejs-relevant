@@ -93,6 +93,34 @@ app.listen(port, () => {
   
 接下来我们对这几类中间件进行一一介绍
 #### 应用中间件
+应用级别的中间件绑定到`app`对象的实例上，通过`app.use`和`app.METHOD`来进行调用。这里提到`METHOD`是`http`请求动词的小写形式。  
+接下来我们通过几个例子来理解应用级别的中间件。
+```js
+const express = require('express');
+const app = express()
+const port = 9000
+// 1. 没有指定请求路径：中间件函数会在应用程序每次接收到请求的时候执行
+app.use((req, res, next) => {
+  console.log('time:', Date.now());
+  next();
+})
+
+// 2. 指定请求路径：中间件函数会在请求路径匹配`/user/:id`的时候执行，这里的请求方式是任意的
+app.use('/user/:id', (req, res, next) => {
+  res.send(req.params.id);
+  next();
+})
+
+// 3. 指定请求路径和请求方式：中间件函数会在请求路径匹配`/goods`以及请求方式为`get`的时候执行
+app.get('/goods', () => {
+  res.send('GOODS');
+  next();
+})
+
+app.listen(port, () => {
+  console.log(`app is listening on port ${port}`);
+})
+```
 
 #### 内置中间件
 

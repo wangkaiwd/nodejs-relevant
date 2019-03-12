@@ -33,7 +33,8 @@ npm i express nodemon -S
 npx nodemon ./01hello world/demo01.js
 ```
 浏览器输入`localhost:3000`：  
-
+![browser](./screenshots/01hello-world-browser.png)
+![node](./screenshots/01hello-world-node.png)
 这里简单介绍一下我们用到的依赖和工具：
 * [`express`](https://github.com/expressjs/express): 一款`nodejs`的`web`框架
 * [`nodemon`](https://github.com/remy/nodemon): 监测`nodejs`应用程序中的任何改变并且自动重启服务

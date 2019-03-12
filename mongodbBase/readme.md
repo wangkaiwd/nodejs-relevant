@@ -1,16 +1,137 @@
 ## `MongoDB`基础知识
 
 ### 常用数据库了解
+> `NoSql`: not only Sql (不仅仅是Sql)
 
+`MongoDB`是一个非关系型数据库(NoSql)。作为一个前端开发者来说，操作`MongoDB`是比较惬意的，因为`MongoDB`不用写`SQL`语句，而且里边的用法都是`JSON`对象的形式。
+
+为了更好的理解非关系型数据库，这里我们先简单了解下关系型数据库。  
+关系型数据库，是指采用了关系模型来组织数据的数据库，常用的关系型数据库有：`oracle`,`mySql`等。
+
+#### 关系型数据库和非关系型数据库的区别
+1. 实质。  
+非关系型数据库的实质：非关系型数据库产品是传统关系型数据库的功能阉割版本，通过减少用不到或者很少用的功能，来大幅提高产品性能。
+
+2. 价格。  
+目前基本大部分主流的非关系型数据库都是免费的。而比较有名气的关系型数据库，比如`Oracle`,`DB2`,`MSSQL`是收费的。虽然`Mysql`免费，但它需要做很多工作才能正式用于生产。
+
+3. 功能。  
+实际开发中，有很多业务需求，其实并不需要完整的关系型数据库功能，非关系型数据库的功能就足够使用了。这种情况，使用性能更高、成本更低的非关系型数据库显然是更加明智的选择。
+
+在比较大型的项目中，我们不建议使用非关系型数据库。但是我们只是想简单写一些小项目，比如搭建一个博客或者是`CMS`(内容管理系统)这类业务逻辑并不怎么复杂的程序，使用`MongoDB`是完全可以胜任的。
+ 
 ### 认识和安装`MongoDB`
+再了解了非关系型数据库和关系型数库之后，我们接下来介绍一下`MongoDB`。
+
+`MongoDB`是一个介于关系数据库和非关系数据库之间的开源产品，是最接近于关系型数据库的`NoSql`数据库。它在轻量级`JSON`交换基础上进行了扩展，即成为`BJSON`的方式来描述其无结构化的数据结构。
+
+#### 安装`MongoDB`
+首先打开`MongoDB`官网：https://www.mongodb.com/,然后在导航`Products`里选择`MongoDB Server`选择合适的版本。这里由于笔者使用的是`Mac`电脑，所以介绍一下`Mac`电脑的安装过程。 
+![install](./screenshots/mongo_install_01.png)
+![install](./screenshots/mongo_install_02.png)
+
+下载完成后我们需要做3件事:  
+1. 配置环境变量
+2. 创建数据库存储目录
+3. 为`MongoDB`数据库存储目录添加使用权限
+
+首先，我们来为`MongoDB`配置环境变量，这样我们不管在个目录下，都可以在命令行通过`mongod`启动数据库，而不用再输入复杂的配置参数。
+
+第一步，我们在终端输入：`export PATH=/usr/local/mongodv/bin:$PATH`。注意，这里要将`/usr/local/mongodv/bin`换成自己安装`MongoDB`目录下的`bin`目录。
+  
+第二步，在终端中输入：`sudo vi ~/.bash_profile`，之后在`vi`模式下将第一步配置好的路径复制粘贴并进行保存。
+
+最后一步，使用`source ~/.bash_profile`更新配置，使配置文件生效。可以通过`echo $PATH`来查看当前系统环境变量
+
+接下来我们要在磁盘根目录建立`/data/db`目录来存储数据库：`sudo mkdir -p /data/db`
+
+在添加环境变量后和建立存储目录后，在终端中输入`mongod`会出现如下提示:
+![read_only](screenshots/mongo_read_only.png)
+之后我们在终端中通过如下命令来赋予目录权限：
+```
+sudo chown -R $USER /data/db
+```
+执行完成后，我们继续执行`mongod`命令：
+![connec_successful](./screenshots/mongo_connec_successful.png)
+至此，我们的`MongoDB`从安装到连接已经完成了，我们可以新开一个终端并输入`mongo`，通过`mongo shell`进行一些简单命令的测试：
+![mongo_shell](./screenshots/mongo_shell_firstuse.png)
+
+
+> 推荐文章：  
+> 1. [Mac mongodb 安装 简书](https://www.jianshu.com/p/bb77f8be67f4)  
+> 2. [为数据库目录添加权限](https://stackoverflow.com/questions/42446931/mongodb-exception-in-initandlisten-20-attempted-to-create-a-lock-file-on-a-rea)
+
 
 ### `MongoDB`基本概念
+这里我们先介绍一些`MongoDB`中的基本概念：
+* 数据库：`database`
+* 集合：`collection`
+* 文档：`document`
+* 数据字段/域：`field`
+* 主键： `_id`
 
-### `CRUD`操作
+`MongoDB`中存储的文档必须有一个`_id`键。这个键的值可以是任何类型的，默认是`ObjectId`对象。在一个集合里，每一个文档都有一个唯一的`id`值，来确保集合里的每一个文档都能被唯一标识。如果一个文档没有指定`_id`字段，`MongoDB`会自动为文档添加`_id`字段，它的值是一个唯一的`ObjectId。
 
+`ObjectId`是一个12字节的`BJSON`类型数据，格式如下：
+* 前4个字节表示时间戳
+* 接下来的3个字节是机器码
+* 紧接的2个字节由进程id组成（PID）
+* 最后三个字节是随机数
+
+`MongoDB`采用`ObjectId`,而不是其它的比较常规做法（比如自动增加的主键）的主要原因，是因为在多个服务器上同步自动增加主键值既费力还费时。
+
+了解了`MongoDB`的基本概念后，我们来学习下`Mongodb`的常用操作：
+* `show dbs/database`: 显示当前所有数据库
+* `use 数据库名称`：进入到指定数据库中，如果当前数据库没有建立的话会自动建立
+* `db`: 显示当前所处的数据库
+* `show collections`: 显示当前所处数据库下的所有集合
+
+这些简单的命令可以在上节提到的`mongo shell`进行简单练习，熟悉一下数据库的基本操作
+
+### [`CRUD`操作](http://www.mongoing.com/docs/crud.html)
+`CRUD`(创建：`Create`,读取：`Read`,更新：`Update`,删除：`Delete`)是对于存储的信息可以进行操作的同义词。是一个对四种操作持久化信息的基本操作的助记符。`CRUD`通常是指适用于存于数据库或数据存储器上的信息的操作
 #### 可视化工具介绍
+通过命令行来操作一些简单的数据库命令比较方便，但是进行一些相对复杂的操作时，并没有一些方便的语法提示和数据展示。接下来，我们使用相关的可视化工具来加快开发效率。
 
+这里我们使用的是[`Robo 3T`](https://robomongo.org/download),我们可以点击链接去下载，也可以自己去官网下载。  
+下载完成后界面如下：
+![robo3t_interface](./screenshots/robo%203T_display.png)
+
+一些常用的操作介绍：
+![robo3t_tools](./screenshots/robo%203Ttools.png)
+
+这里我们建立一个`mongo_demos`的数据库，接下来的相关`CRUD`都会在这个数据库里进行:
+```js
+use mongo_demos // 进入mongo_demos数据库
+db // 当前操作的数据库： mongo_demos
+```
 #### 插入操作(`insert`)
+`MongoDB`插入操作会为一个集合添加一条新的文档，如果集合不存在的话，会自动创建。  
+`MongoDB`以下方法来为集合插入文档：
+* `db.collection.insert`: 向集合中插入一条或多条文档
+* `db.collection.insertOne`: 向集合中插入一条文档
+* `db.colleciton.insertMany`: 向集合中插入多条文档
+ 
+
+接下来我们建立一个员工集合，并为集合添加几条员工信息：
+```js
+db.employee.insert(
+  [
+    { name:'小李', age: 20, salary: 40000 },
+    { name:'张三', age: 24, salary: 40400 },
+    { name:'王五', age: 26, salary: 20000 }
+  ]
+)
+```
+上边的代码会创建`emplyee`集合，并向集合中插入3条文档，`_id`也会随着文档的插入而自动创建，来唯一标识每一条文档。
+
+这里我们对插入命令的在性能方面做一个小测试。  
+假如我们接到一个需求，需要在`numbers`集合中插入20000条数据。解决方案有如下俩种：
+```js
+// 1. 通过循环，执行20000次插入操作
+
+// 2. 将要插入元素构造数组，然后一次性插入
+```
 
 #### 查询操作(`find`)
 

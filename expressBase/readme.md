@@ -49,14 +49,58 @@ npx webpack -v
 当然，这只是`npx`最基础的一个功能，要想了解更多用法可以参考阮一峰老师的文章: [`npx`使用教程](http://www.ruanyifeng.com/blog/2019/02/npx.html)
 
 ### `express`中间件介绍
+一个`express`应用程序，本质上就是一系列中间件函数的调用。
 
+什么是中间件？  
+`express`中的中间件其实是一个用来处理请求和响应的函数，当中间件将对应逻辑处理完成后，通过执行`next()`函数，来继续执行接下来的中间件。如果没有执行`next()`的话，请求将会挂起。
+
+`express`中间件函数具有以下功能：
+* 执行任何代码
+* 修改请求(req)和响应(res)对象
+* 结束请求响应周期
+* 调用中间件栈中的下一个中间件函数
+
+下面是一个中间件执行的例子：
+```js
+const express = require('express');
+const app = express();
+const port = 9000
+app.use((req, res, next) => {
+  console.log(1);
+  next();
+});
+app.use((req, res, next) => {
+  console.log(2);
+});
+app.use((req, res, next) => {
+  console.log(3);
+});
+app.listen(port, () => {
+  console.log(`app is listening on port ${port}`)
+})
+// 访问localhost:9000
+// output: 
+// 1
+// 2
+```
+
+`express`框架中，中间件主要分为以下几类：
+1. 应用级中间件
+2. 内置中间件
+3. 路由中间件
+4. 错误处理中间件
+5. 第三方中间件
+  
+接下来我们对这几类中间件进行一一介绍
 #### 应用中间件
+
+#### 内置中间件
 
 #### 路由中间件
 
 #### 错误处理中间件
 
-#### 实现中间件
+#### 第三方中间件
 
 ### `express`路由
 

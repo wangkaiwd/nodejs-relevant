@@ -77,7 +77,7 @@ npx webpack -v
 #### 单文件上传
 #### 多文件上传
 #### 文件预览
-#### 将`node.js`代码上传到服务器
+#### 将`node.js`代码部署到服务器
 
 ### `express-generator`脚手架
 

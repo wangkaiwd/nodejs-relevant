@@ -157,6 +157,12 @@ db.employee.insert(array)
 接下来我们导入2个集合到`mongo_demos`数据库中，进行查询操作的演示:
 
 这里我们成功导入和部门(dept)集合以及员工(emp)集合:
+```
+mongoimport -d mongo_demos -c depts --file /path/to/my/fileThatIWantToImport.json
+mongoimport -d mongo_demos -c emps --file /path/to/my/fileThatIWantToImport.json
+```
+我们只要把上边代码中的`mongo_demos`,`depts`,`/path/to/my/fileThatIWantToImport.json`换成自己`mongoDB`中对应的数据库和集合的名字以及对应`json`文件的保存目录即可。  
+具体操作可以参考： [`import a data file.json into robo3T(robomongo)`](https://stackoverflow.com/questions/23009146/import-a-data-base-file-json-into-robo3t-robomongo)
 
 这里我们要完成几个需求：
 1. 查询所有员工信息
@@ -178,6 +184,8 @@ db.dept.find({loc: '北京'})
 `vlaue`的取值如下：
 * 1 或 true: 匹配文档展示该字段
 * 0 或 false: 匹配文档不展示该字段
+
+> `_id`字段投影属性默认为1，需要手动设置为-1,才不会在查询结果中展示
 
 我们继续来完成几个需求：
 1. 只查询姓名为孙二娘的员工的薪水情况

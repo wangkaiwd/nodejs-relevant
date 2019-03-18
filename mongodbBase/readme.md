@@ -229,7 +229,20 @@ db.emps.find({$or:[{sal:{$lt:1000}},{sal:{$gt:2500}}]})
 // 25.将所有员工按照薪水升序排序
 // 26.将所有员工按照薪水降序排序
 #### 修改操作(`update`)
+`MongoDB`的更新操作会编辑一个集合中存在的文档，它为我们提供了以下来更新集合文档的方法：
+* `db.collection.updateOne`: 更新查询条件查询到的所有文档中的第一条
+* `db.collection.updateMany`: 更新查询条件查询到的所有文档
+* `db.collection.replaceOne`: 使用指定的文档替换查询到的文档
+* `db.collection.update`: 默认情况会更新查询到的第一条文档，如果设置了`{multi:true}`会更新匹配到的所有文档
 
+在默认情况下，更新操作会将指定文档直接替换查询文档，而不是在更改原有字段对应的值，或新添加一个字段。通常我们会通过查询操作符来处理这个问题。
+```js
+// 更新一个员工信息
+db.emps.update({name:'林冲'},{name:'林冲1'}) // 这样会直接将原有的name为林冲的文档直接替换
+db.emps.update({name:'林冲'},{$set:{name:'林冲1'}}) // 这样才是将name为林冲的文档的name修改为林冲1
+```
+查询`api`的常用语法介绍：  
+![update_api](./screenshots/update_api.png)
 
 #### 删除操作(`delete`)
 

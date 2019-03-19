@@ -244,6 +244,20 @@ db.emps.update({name:'林冲'},{$set:{name:'林冲1'}}) // 这样才是将name�
 查询`api`的常用语法介绍：  
 ![update_api](./screenshots/update_api.png)
 
+接下来我们了解一下常用的查询操作符：
+* `$set`: 设置一个文档中某个字段的属性值
+* `$unset`: 从一个文档移除指定的字段
+* `$inc`: 为文档中的某个字段增加指定的值。(增加的值为负值时相当于减少)
+
+下面进行一些演示：
+```js
+// 1. 将员工姓名为吴用的job改为工程师
+db.emps.update({name:'吴用'},{$set:{job:'工程师'}})
+// 2. 删除员工姓名为李逵的hiredate字段
+db.emps.update({name:'李逵'},{$unset:{hiredate:''}})
+// 3. 为所有薪资低于1000的员工增加工资400元
+db.emps.update({sal:{$lt:1000}},{$inc:{sal:400}})
+```
 #### 删除操作(`delete`)
 
 ### `mongoose`基本概念

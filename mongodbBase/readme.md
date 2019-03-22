@@ -270,6 +270,16 @@ db.emps.update({name:'李逵'},{$unset:{hiredate:''}})
 db.emps.update({sal:{$lt:1000}},{$inc:{sal:400}})
 ```
 #### 删除操作(`delete`)
+删除操作是一个很危险的操作，所以对应的删除文档，集合以及数据库的操作我们用到的相对较少。而一般的删除操作，都是我们在对应的文档中多添加一个字段(如`{isDelete:1}`),对应的值为1的话代表删除，值为0的话代表没有删除。我们在查询的时候可以通过如下命令:  
+```js
+// 查询没有删除的文档
+db.collection.find({isDelete:0})
+// 查询已删除的文档
+db.collection.find({isDelete:1})
+// 删除某条文档
+db.collection.update({_id:'testId'},{$set:{isDelete:1}})
+```
+这样做的话可以很方便的对一些不小心误执行的删除操作进行复原，以及对历史数据的操作和分析。所以我们一般见到的删除操作，并不是真正意义上的删除。
 
 ### `mongoose`基本概念
 

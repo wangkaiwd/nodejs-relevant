@@ -123,7 +123,12 @@ app.listen(port, () => {
 ```
 
 #### 内置中间件
+`express`为我们提供了如下内置中间件：
+* `express.static`： 为html,images等提供静态资源服务器
+* `express.json`： 解析`json`格式的请求
+* `express.urlencoded`：解析`application/x-www-form-urlencoded`格式的请求
 
+`express.json`和`express.urlencoded`是`Express v4.16.0`版本才加入的，基于第三方中间件`body-parser`，用来处理`post`请求，方便进行参数获取和逻辑处理。
 #### 路由中间件
 
 #### 错误处理中间件

@@ -128,7 +128,24 @@ app.listen(port, () => {
 * `express.json`： 解析`json`格式的请求
 * `express.urlencoded`：解析`application/x-www-form-urlencoded`格式的请求
 
-`express.json`和`express.urlencoded`是`Express v4.16.0`版本才加入的，基于第三方中间件`body-parser`，用来处理`post`请求，方便进行参数获取和逻辑处理。
+`express.json`和`express.urlencoded`是`Express v4.16.0`版本才加入的，基于第三方中间件`body-parser`，用来处理`post`请求，方便进行参数获取和逻辑处理。  
+
+接下来我们用一个例子来演示一下`express.static`的使用：  
+```js
+const options = {
+  dotfiles: 'ignore',
+  etag: false,
+  extensions: ['htm', 'html'],
+  index: false,
+  maxAge: '1d',
+  redirect: false,
+  setHeaders: function (res, path, stat) {
+    res.set('x-timestamp', Date.now())
+  }
+}
+
+app.use(express.static('public', options))
+```
 #### 路由中间件
 
 #### 错误处理中间件

@@ -156,6 +156,16 @@ app.listen(PORT, () => {
   console.log(`server is listening on ${PORT}`);
 });
 ```
+总结一下,`express.static`大概有如下特性：
+* 为指定目录下的文件提供静态资源服务器
+* 可以为多个目录提供静态资源服务，但是相同文件会按照设置顺序来查找
+* 静态资源路径并不会包含目录名，但是我们可以为它们统一添加一个虚拟前缀
+* 根路径的设置最好使用绝对路径
+
+代码最终效果如下：  
+![express.static](screenshots/02middleware-express.static.png)  
+
+
 #### 路由中间件
 
 #### 错误处理中间件

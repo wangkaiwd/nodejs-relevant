@@ -92,7 +92,7 @@ app.listen(port, () => {
 5. 第三方中间件
   
 接下来我们对这几类中间件进行一一介绍
-#### 应用中间件
+#### 应用中间件和路由中间件
 应用级别的中间件绑定到`app`对象的实例上，通过`app.use`和`app.METHOD`来进行调用。这里提到`METHOD`是`http`请求动词的小写形式。  
 接下来我们通过几个例子来理解应用级别的中间件。
 ```js
@@ -121,6 +121,30 @@ app.listen(port, () => {
   console.log(`app is listening on port ${port}`);
 })
 ```
+
+路由级别的中间件和应用级中间件的工作方式相同，区别在于它绑定到`express.Router()`的实例：
+```js
+const router = express.Router()
+```
+路由级中间件的调用类似于应用级中间件，可以通过`router.use`和`router.METHOD`来进行调用。下面是一个最简单的使用例子： 
+```js
+const express = require('express');
+const app = express();
+const router = express.Router();
+const PORT = 8000;
+
+router.get('/router1', (req, res) => {
+  res.send('router1');
+});
+router.get('/router2', (req, res) => {
+  res.send('router2');
+});
+app.use('/router', router);
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}`);
+});
+```
+执行代码后浏览器输入`localhost:8000/router/router1`页面会显示：`router1`，输入`localhost:8000/router/router2`页面会显示:`router2`
 
 #### 内置中间件
 `express`为我们提供了如下内置中间件：
@@ -165,11 +189,71 @@ app.listen(PORT, () => {
 代码最终效果如下：  
 ![express.static](screenshots/02middleware-express.static.png)  
 
+接下来我们学习剩余俩个内置中间，来处理`post`请求，使用方法类似于`body-parse`中间件： 
+```js
+const express = require('express');
+const app = express();
+const PORT = 8000;
+// 处理Content-Type: application/json的post请求参数
+app.use(express.json());
+// 处理Content-Type: application/x-www-form-urlencoded的post请求参数
+// extended:设置解析key=val&key1=val1的格式方式，false:使用querystring模块解析，true:使用qs模块进行解析
+app.use(express.urlencoded({ extended: true }));
+app.post('/json', (req, res) => {
+  // json { data: [ { id: 1, name: 'wk' } ], pageSize: 10, pageIndex: 1 }
+  console.log('json', req.body);
+  res.send(req.body);
+});
+app.post('/form', (req, res) => {
+  // form { pageSize: '10', pageIndex: '1' }
+  console.log('form', req.body);
+  res.send(req.body);
+});
+app.listen(PORT, () => {
+  console.log(`server is listen on ${PORT}`);
+});
+```
+执行以上代码以后，可以用`postman`发起对应的请求，请求参数通过`req.body`来进行获取
 
-#### 路由中间件
+到这里，我们已经将`express`的3个内置中间件学习完成。
 
 #### 错误处理中间件
+错误处理中间的使用方式和其它中间件完成相同，唯一的区别是其它中间的参数为3个，而错误处理中间件的参数为4个且必须传入4个参数，即使你不并不需要其中的某些参数：
+  
+下面是一个错误处理中间件的例子
+```js
+const path = require('path');
+const app = express();
+const PORT = 8000;
 
+app.get('/', (req, res) => {
+  res.send('hello no error');
+});
+app.get('/error', (req, res) => {
+  console.log(a);
+  res.send('hello error');
+});
+
+app.get('/asyncError', (req, res, next) => {
+  fs.readFile(path.resolve(__dirname, './static-file/public/index'), (err, data) => {
+    if (err) {
+      next(err); // 通过next函数将异步错误传递到错误处理中间件
+    } else {
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(data);
+    }
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.log(err); // 会捕获到错误信息
+  res.status(500).send('Something broke!');
+});
+app.listen(PORT, () => {
+  console.log(`server is listening on port ${PORT}`);
+});
+```
+运行代码后，当浏览器访问`localhost:8000/error`和`localhost:8000/asyncError`时，错误处理中间件会捕获到异常，并为浏览器返回`Something broke`。这里需要注意的是异步的异常是通过`next`函数进行传入。
 #### 第三方中间件
 
 ### `express`路由

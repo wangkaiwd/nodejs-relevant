@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const PORT = 8000;
+// 处理Content-Type: application/json的post请求参数
 app.use(express.json());
+// 处理Content-Type: application/x-www-form-urlencoded的post请求参数
 // extended:设置解析key=val&key1=val1的格式方式，false:使用querystring模块解析，true:使用qs模块进行解析
 app.use(express.urlencoded({ extended: true }));
 app.post('/json', (req, res) => {
